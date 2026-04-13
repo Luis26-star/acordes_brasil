@@ -41,6 +41,8 @@ analyser.getFloatTimeDomainData(dataArray)
 const pitch = detectPitch(dataArray,audioContext.sampleRate)
 
 const volume = getVolume(dataArray)
+  
+const voice = detectVoice(pitch)
 
 if(!pitch || !isFinite(pitch)){
 
@@ -51,6 +53,8 @@ document.getElementById("pitch").innerText =
 
 document.getElementById("pitch").innerText =
 "Tonhöhe: " + Math.round(pitch) + " Hz"
+  document.getElementById("voice").innerText = 
+    "Stimme: " + voice
 
 }
 
@@ -144,5 +148,28 @@ ctx.lineTo(x,y)
 }
 
 ctx.stroke()
+
+}
+function detectVoice(pitch){
+
+if(!pitch || !isFinite(pitch)) return "—"
+
+if(pitch >= 80 && pitch < 200){
+return "Bass"
+}
+
+if(pitch >= 120 && pitch < 300){
+return "Tenor"
+}
+
+if(pitch >= 180 && pitch < 400){
+return "Alt"
+}
+
+if(pitch >= 260){
+return "Sopran"
+}
+
+return "—"
 
 }
