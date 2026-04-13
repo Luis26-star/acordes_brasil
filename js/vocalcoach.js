@@ -42,9 +42,19 @@ const pitch = detectPitch(dataArray,audioContext.sampleRate)
 
 const volume = getVolume(dataArray)
 
+if(!pitch || !isFinite(pitch)){
+
+document.getElementById("pitch").innerText =
+"Tonhöhe: —"
+
+}else{
+
 document.getElementById("pitch").innerText =
 "Tonhöhe: " + Math.round(pitch) + " Hz"
 
+}
+
+  
 document.getElementById("volume").innerText =
 "Lautstärke: " + volume.toFixed(2)
 
