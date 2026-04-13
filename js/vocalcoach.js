@@ -39,6 +39,10 @@ function update(){
 analyser.getFloatTimeDomainData(dataArray)
 
 let pitch = detectPitch(dataArray,audioContext.sampleRate)
+
+if(!isFinite(pitch)){
+pitch = 0
+
 let volume = getVolume(dataArray)
 
 if(!pitch || pitch < 60 || pitch > 1200){
