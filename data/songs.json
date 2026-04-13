@@ -3,11 +3,13 @@
 "title": "Canto de Ossanha",
 "folder": "canto_de_ossanha",
 "cover": "images/covers/ossanha.jpg"
+  "score":"scores/canto_de_ossanha.pdf"
 },
 
 {
 "title": "Mas que Nada",
 "folder": "mas_que_nada",
 "cover": "images/covers/masquena.jpg"
+  "score":"scores/mas_que_nada.pdf"
 }
 ]
