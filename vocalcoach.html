@@ -19,13 +19,17 @@
 
 <br><br>
 
-<button onclick="analyze()">Analyse starten</button>
+  <button onclick="startListening()">🎤 Live Analyse starten</button>
 
-<h2>Ergebnis</h2>
+<button onclick="stopListening()">⏹ Stop</button>
 
-<div id="result"></div>
+<h2>Analyse</h2>
 
-<script src="js/vocalcoach.js"></script>
+<div id="pitch">Tonhöhe: -</div>
+<div id="volume">Lautstärke: -</div>
+
+<canvas id="visualizer" width="600" height="200"></canvas>
+  <script src="js/vocalcoach.js"></script>
 
 </body>
 
