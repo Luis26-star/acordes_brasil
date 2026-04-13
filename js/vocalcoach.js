@@ -58,3 +58,53 @@ feedback += "⚠ Tonhöhe schwer erkennbar<br>"
 result.innerHTML = feedback
 
 }
+function detectPitch(buffer, sampleRate){
+
+let SIZE = buffer.length
+let bestOffset = -1
+let bestCorrelation = 0
+let rms = 0
+
+for(let i=0;i<SIZE;i++){
+
+let val = buffer[i]
+rms += val*val
+
+}
+
+rms = Math.sqrt(rms/SIZE)
+
+if(rms < 0.01) return -1
+
+let lastCorrelation = 1
+
+for(let offset=0; offset < SIZE/2; offset++){
+
+let correlation = 0
+
+for(let i=0;i<SIZE/2;i++){
+
+correlation += Math.abs((buffer[i])-(buffer[i+offset]))
+
+}
+
+correlation = 1 - (correlation/(SIZE/2))
+
+if(correlation > bestCorrelation){
+
+bestCorrelation = correlation
+bestOffset = offset
+
+}
+
+}
+
+if(bestOffset > -1){
+
+return sampleRate/bestOffset
+
+}
+
+return -1
+
+}
