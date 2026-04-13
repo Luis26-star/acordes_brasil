@@ -39,23 +39,36 @@ function update(){
 analyser.getFloatTimeDomainData(dataArray)
 
 let pitch = detectPitch(dataArray,audioContext.sampleRate)
+let volume = getVolume(dataArray)
 
-if(!pitch || pitch < 60 || pitch > 1000){
-pitch = null
-}
+if(!pitch || pitch < 60 || pitch > 1200){
 
-const volume = getVolume(dataArray)
-  
-const voice = detectVoice(pitch)
-
-if(!pitch){
 document.getElementById("pitch").innerText =
 "Tonhöhe: —"
+
+document.getElementById("voice").innerText =
+"Stimme: —"
+
 }else{
+
 document.getElementById("pitch").innerText =
 "Tonhöhe: " + Math.round(pitch) + " Hz"
+
+const voice = detectVoice(pitch)
+
+document.getElementById("voice").innerText =
+"Stimme: " + voice
+
 }
 
+document.getElementById("volume").innerText =
+"Lautstärke: " + volume.toFixed(2)
+
+drawWaveform()
+
+animation = requestAnimationFrame(update)
+
+}
 }else{
 
 document.getElementById("pitch").innerText =
