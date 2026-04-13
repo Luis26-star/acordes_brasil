@@ -108,3 +108,20 @@ return sampleRate/bestOffset
 return -1
 
 }
+async function loadSongReference(){
+
+const params = new URLSearchParams(window.location.search)
+const songName = params.get("song")
+
+const response = await fetch("data/songs.json")
+const songs = await response.json()
+
+const song = songs.find(s => s.folder === songName)
+
+if(song){
+return song.referencePitch
+}
+
+return null
+
+}
