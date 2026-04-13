@@ -1,3 +1,66 @@
+function getSong(){
+
+const params = new URLSearchParams(window.location.search)
+
+return params.get("s")
+
+}
+
+const song = getSong()
+
+if(song){
+
+document.getElementById("soprano").src = "audio/"+song+"/soprano.mp3"
+document.getElementById("alt").src = "audio/"+song+"/alt.mp3"
+document.getElementById("tenor").src = "audio/"+song+"/tenor.mp3"
+document.getElementById("bass").src = "audio/"+song+"/bass.mp3"
+
+}
+
+function setVolume(voice,volume){
+
+document.getElementById(voice).volume = volume
+
+}
+
+function setTempo(speed){
+
+document.querySelectorAll("audio").forEach(audio=>{
+
+audio.playbackRate = speed
+
+})
+
+}
+
+let loopInterval
+
+function startLoop(){
+
+const start = document.getElementById("loopStart").value
+const end = document.getElementById("loopEnd").value
+
+loopInterval = setInterval(()=>{
+
+document.querySelectorAll("audio").forEach(audio=>{
+
+if(audio.currentTime >= end){
+
+audio.currentTime = start
+
+}
+
+})
+
+},200)
+
+}
+
+function stopLoop(){
+
+clearInterval(loopInterval)
+
+}
 const params = new URLSearchParams(window.location.search)
 const song = params.get("s")
 
