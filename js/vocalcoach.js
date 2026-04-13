@@ -1,82 +1,79 @@
-async function analyze(){
+let audioContext
+let analyser
+let microphone
+let dataArray
+let animation
 
-const fileInput = document.getElementById("audioFile")
+async function startListening(){
 
-if(!fileInput.files.length){
+audioContext = new AudioContext()
 
-alert("Bitte Aufnahme wählen")
-return
+const stream = await navigator.mediaDevices.getUserMedia({audio:true})
+
+microphone = audioContext.createMediaStreamSource(stream)
+
+analyser = audioContext.createAnalyser()
+
+analyser.fftSize = 2048
+
+microphone.connect(analyser)
+
+dataArray = new Float32Array(analyser.fftSize)
+
+update()
 
 }
 
-const file = fileInput.files[0]
+function stopListening(){
 
-const audioContext = new AudioContext()
+cancelAnimationFrame(animation)
 
-const arrayBuffer = await file.arrayBuffer()
+if(audioContext){
+audioContext.close()
+}
 
-const audioBuffer = await audioContext.decodeAudioData(arrayBuffer)
+}
 
-const data = audioBuffer.getChannelData(0)
+function update(){
+
+analyser.getFloatTimeDomainData(dataArray)
+
+const pitch = detectPitch(dataArray,audioContext.sampleRate)
+
+const volume = getVolume(dataArray)
+
+document.getElementById("pitch").innerText =
+"Tonhöhe: " + Math.round(pitch) + " Hz"
+
+document.getElementById("volume").innerText =
+"Lautstärke: " + volume.toFixed(2)
+
+drawWaveform()
+
+animation = requestAnimationFrame(update)
+
+}
+
+function getVolume(buffer){
 
 let sum = 0
 
-for(let i=0;i<data.length;i++){
+for(let i=0;i<buffer.length;i++){
 
-sum += Math.abs(data[i])
-
-}
-
-const avgVolume = sum / data.length
-
-const result = document.getElementById("result")
-
-let feedback = ""
-
-if(avgVolume > 0.05){
-
-feedback += "🔊 Stimme deutlich hörbar<br>"
-
-}else{
-
-feedback += "⚠ Aufnahme sehr leise<br>"
+sum += buffer[i]*buffer[i]
 
 }
 
-const pitch = detectPitch(data, audioContext.sampleRate)
-
-if(pitch > 200 && pitch < 800){
-
-feedback += "🎵 Tonhöhe erkannt: " + Math.round(pitch) + " Hz<br>"
-
-}else{
-
-feedback += "⚠ Tonhöhe schwer erkennbar<br>"
+return Math.sqrt(sum/buffer.length)
 
 }
 
-result.innerHTML = feedback
-
-}
-function detectPitch(buffer, sampleRate){
+function detectPitch(buffer,sampleRate){
 
 let SIZE = buffer.length
+
 let bestOffset = -1
 let bestCorrelation = 0
-let rms = 0
-
-for(let i=0;i<SIZE;i++){
-
-let val = buffer[i]
-rms += val*val
-
-}
-
-rms = Math.sqrt(rms/SIZE)
-
-if(rms < 0.01) return -1
-
-let lastCorrelation = 1
 
 for(let offset=0; offset < SIZE/2; offset++){
 
@@ -84,7 +81,7 @@ let correlation = 0
 
 for(let i=0;i<SIZE/2;i++){
 
-correlation += Math.abs((buffer[i])-(buffer[i+offset]))
+correlation += Math.abs(buffer[i] - buffer[i+offset])
 
 }
 
@@ -101,27 +98,41 @@ bestOffset = offset
 
 if(bestOffset > -1){
 
-return sampleRate/bestOffset
+return sampleRate / bestOffset
 
 }
 
-return -1
+return 0
 
 }
-async function loadSongReference(){
 
-const params = new URLSearchParams(window.location.search)
-const songName = params.get("song")
+function drawWaveform(){
 
-const response = await fetch("data/songs.json")
-const songs = await response.json()
+const canvas = document.getElementById("visualizer")
 
-const song = songs.find(s => s.folder === songName)
+if(!canvas) return
 
-if(song){
-return song.referencePitch
+const ctx = canvas.getContext("2d")
+
+ctx.fillStyle = "#0B1F3B"
+ctx.fillRect(0,0,canvas.width,canvas.height)
+
+ctx.strokeStyle = "#1DB954"
+ctx.beginPath()
+
+for(let i=0;i<dataArray.length;i++){
+
+const x = (i/dataArray.length)*canvas.width
+const y = (dataArray[i]*100)+100
+
+if(i===0){
+ctx.moveTo(x,y)
+}else{
+ctx.lineTo(x,y)
 }
 
-return null
+}
+
+ctx.stroke()
 
 }
