@@ -38,16 +38,23 @@ function update(){
 
 analyser.getFloatTimeDomainData(dataArray)
 
-const pitch = detectPitch(dataArray,audioContext.sampleRate)
+let pitch = detectPitch(dataArray,audioContext.sampleRate)
+
+if(!pitch || pitch < 60 || pitch > 1000){
+pitch = null
+}
 
 const volume = getVolume(dataArray)
   
 const voice = detectVoice(pitch)
 
-if(!pitch || !isFinite(pitch)){
-
+if(!pitch){
 document.getElementById("pitch").innerText =
 "Tonhöhe: —"
+}else{
+document.getElementById("pitch").innerText =
+"Tonhöhe: " + Math.round(pitch) + " Hz"
+}
 
 }else{
 
