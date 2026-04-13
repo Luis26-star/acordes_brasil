@@ -1,1 +1,27 @@
+body{
 
+font-family: Arial;
+background:#0B1F3B;
+color:white;
+text-align:center;
+
+}
+
+.menu a{
+
+display:block;
+margin:20px;
+font-size:20px;
+color:white;
+text-decoration:none;
+
+}
+
+#songs div{
+
+background:#1a2f55;
+margin:20px;
+padding:20px;
+border-radius:10px;
+
+}
