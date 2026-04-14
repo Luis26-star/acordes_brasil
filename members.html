@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,16 +9,26 @@
 <link rel="stylesheet" href="css/style.css">
 
 <style>
+
 .member{
 background:#1e293b;
-padding:12px;
-margin:8px;
-border-radius:8px;
+padding:10px;
+margin:6px;
+border-radius:6px;
+color:white;
 }
 
-.voice{
-opacity:0.7;
+h2{
+margin-top:20px;
 }
+
+body{
+font-family:Arial;
+background:#0B1F3B;
+color:white;
+padding:20px;
+}
+
 </style>
 
 </head>
@@ -30,10 +41,8 @@ opacity:0.7;
 
 <script>
 
-<script>
-
 fetch("data/members.json")
-.then(res => res.json())
+.then(response => response.json())
 .then(data => {
 
 const container = document.getElementById("membersList")
@@ -65,20 +74,13 @@ voices[voice].forEach(name => {
 
 const div = document.createElement("div")
 div.className = "member"
-
-div.innerHTML = `<b>${name}</b>`
+div.innerText = name
 
 container.appendChild(div)
 
 })
 
 }
-
-})
-
-})
-
-</script>
 
 })
 
