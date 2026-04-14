@@ -1,1 +1,58 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mitglieder</title>
 
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+.member{
+background:#1e293b;
+padding:12px;
+margin:8px;
+border-radius:8px;
+}
+
+.voice{
+opacity:0.7;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>👥 Mitglieder</h1>
+
+<div id="membersList"></div>
+
+<script>
+
+fetch("data/members.json")
+.then(res => res.json())
+.then(data => {
+
+const container = document.getElementById("membersList")
+
+data.forEach(member => {
+
+const div = document.createElement("div")
+div.className="member"
+
+div.innerHTML = `
+<b>${member.name}</b><br>
+<span class="voice">${member.voice}</span>
+`
+
+container.appendChild(div)
+
+})
+
+})
+
+</script>
+
+</body>
+</html>
