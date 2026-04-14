@@ -202,3 +202,16 @@ width:70px;
 margin:5px;
 
 }
+.voice-card{
+
+background:#1e293b;
+padding:25px;
+margin:20px 0;
+border-radius:10px;
+text-align:center;
+
+}
+
+.voice-card h2{
+margin-top:0;
+}
