@@ -10,24 +10,24 @@
 
 <style>
 
-.member{
-background:#1e293b;
-padding:10px;
-margin:6px;
-border-radius:6px;
-color:white;
-}
-
-h2{
-margin-top:20px;
-}
-
 body{
 font-family:Arial;
 background:#0B1F3B;
 color:white;
 padding:20px;
 }
+
+.member{
+background:#1e293b;
+padding:10px;
+margin:6px;
+border-radius:6px;
+}
+
+.sopran{background:#FFD54F;color:black;}
+.alt{background:#81C784;}
+.tenor{background:#64B5F6;}
+.bass{background:#E57373;}
 
 </style>
 
@@ -47,47 +47,27 @@ fetch("data/members.json")
 
 const container = document.getElementById("membersList")
 
-const voices = {
-"Sopran": [],
-"Alt": [],
-"Tenor": [],
-"Bass": []
-}
-
 data.forEach(member => {
 
-if(voices[member.voice]){
-voices[member.voice].push(member.name)
-}
-
-})
-
-Object.keys(voices).forEach(voice => {
-
-if(voices[voice].length > 0){
-
-const title = document.createElement("h2")
-title.innerText = voice
-container.appendChild(title)
-
-voices[voice].forEach(name => {
-
 const div = document.createElement("div")
-div.className = "member"
-div.innerText = name
+
+let colorClass=""
+
+if(member.voice==="Sopran") colorClass="sopran"
+if(member.voice==="Alt") colorClass="alt"
+if(member.voice==="Tenor") colorClass="tenor"
+if(member.voice==="Bass") colorClass="bass"
+
+div.className="member "+colorClass
+
+div.innerHTML = "<b>"+member.name+"</b><br>"+member.voice
 
 container.appendChild(div)
 
 })
 
-}
-
 })
 
-})
-<br><br>
-
-<a href="dashboard.html">⬅ Zurück zur App</a>
 </script>
 
 </body>
