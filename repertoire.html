@@ -82,16 +82,16 @@ div.innerHTML = `
 <a href="${song.score}" target="_blank">📄 Noten PDF</a>
 
 <h4>Sopran</h4>
-<audio controls src="audio/${song.folder}/soprano.mp3"></audio>
+<audio id="${song.folder}-soprano" controls src="audio/${song.folder}/soprano.mp3"></audio>
 
 <h4>Alt</h4>
-<audio controls src="audio/${song.folder}/alto.mp3"></audio>
+<audio id="${song.folder}-alto" controls src="audio/${song.folder}/alto.mp3"></audio>
 
 <h4>Tenor</h4>
-<audio controls src="audio/${song.folder}/tenor.mp3"></audio>
+<audio id="${song.folder}-tenor" controls src="audio/${song.folder}/tenor.mp3"></audio>
 
 <h4>Bass</h4>
-<audio controls src="audio/${song.folder}/bass.mp3"></audio>
+<audio id="${song.folder}-bass" controls src="audio/${song.folder}/bass.mp3"></audio>
 
 </div>
 
