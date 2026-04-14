@@ -1,0 +1,40 @@
+[
+{
+"date":"17-04-2026",
+"time":"19:00",
+"location":"Curumim",
+
+"songs":[
+"Canto de Ossanha",
+"Mas que Nada",
+"Hallelujah"
+],
+
+"voices":{
+"Sopran":7,
+"Alt":6,
+"Tenor":4,
+"Bass":5
+}
+
+},
+
+{
+"date":"17-04-2026",
+"time":"19:00",
+"location":"Curumim",
+
+"songs":[
+"Garota de Ipanema",
+"Água de Beber"
+],
+
+"voices":{
+"Sopran":8,
+"Alt":7,
+"Tenor":5,
+"Bass":4
+}
+
+}
+]
