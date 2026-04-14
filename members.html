@@ -30,23 +30,55 @@ opacity:0.7;
 
 <script>
 
+<script>
+
 fetch("data/members.json")
 .then(res => res.json())
 .then(data => {
 
 const container = document.getElementById("membersList")
 
+const voices = {
+"Sopran": [],
+"Alt": [],
+"Tenor": [],
+"Bass": []
+}
+
 data.forEach(member => {
 
-const div = document.createElement("div")
-div.className="member"
+if(voices[member.voice]){
+voices[member.voice].push(member.name)
+}
 
-div.innerHTML = `
-<b>${member.name}</b><br>
-<span class="voice">${member.voice}</span>
-`
+})
+
+Object.keys(voices).forEach(voice => {
+
+if(voices[voice].length > 0){
+
+const title = document.createElement("h2")
+title.innerText = voice
+container.appendChild(title)
+
+voices[voice].forEach(name => {
+
+const div = document.createElement("div")
+div.className = "member"
+
+div.innerHTML = `<b>${name}</b>`
 
 container.appendChild(div)
+
+})
+
+}
+
+})
+
+})
+
+</script>
 
 })
 
