@@ -2,6 +2,7 @@ function formatDate(dateString) {
   const d = new Date(dateString)
   return d.toLocaleDateString("de-DE")
 }
+
 fetch("data/rehearsals.json")
   .then(res => res.json())
   .then(data => {
@@ -14,7 +15,9 @@ fetch("data/rehearsals.json")
       const div = document.createElement("div")
       div.className = "rehearsal"
 
-      const songs = (r.songs || [] .map(song => "<li>" + song + "</li>").join("")
+      const songs = (r.songs || [])
+        .map(song => "<li>" + song + "</li>")
+        .join("")
 
       div.innerHTML = `
         <h2>📅 ${formatDate(r.date)}</h2>
@@ -35,9 +38,5 @@ fetch("data/rehearsals.json")
       container.appendChild(div)
 
     })
-  })
 
-function formatDate(dateStr) {
-  const d = new Date(dateStr)
-  return d.toLocaleDateString("de-DE")
-}
+  })
