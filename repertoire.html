@@ -87,6 +87,7 @@ div.innerHTML = `
 <h4>Sopran</h4>
 <audio id="${song.folder}-soprano" controls src="audio/${song.folder}/soprano.mp3"></audio>
 
+
 <h4>Alt</h4>
 <audio id="${song.folder}-alto" controls src="audio/${song.folder}/alto.mp3"></audio>
 
@@ -105,6 +106,22 @@ container.appendChild(div)
 })
 
 })
+  function playAll(song){
+
+const voices=["soprano","alto","tenor","bass"]
+
+voices.forEach(v=>{
+
+const audio=document.getElementById(song+"-"+v)
+
+if(audio){
+audio.currentTime=0
+audio.play()
+}
+
+})
+
+}
 
 </script>
 
