@@ -81,6 +81,9 @@ div.innerHTML = `
 
 <a href="${song.score}" target="_blank">📄 Noten PDF</a>
 
+<button onclick="playAll('${song.folder}')">
+▶ Alle Stimmen starten
+</button>
 <h4>Sopran</h4>
 <audio id="${song.folder}-soprano" controls src="audio/${song.folder}/soprano.mp3"></audio>
 
