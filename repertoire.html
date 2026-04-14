@@ -99,7 +99,7 @@ div.className = "song"
 
 div.innerHTML = `
 
-<img src="${song.cover}" alt="${song.title}">
+<img src="${song.cover || 'images/default-cover.jpg'}" alt="${song.title}">
 
 <div class="song-info">
 
