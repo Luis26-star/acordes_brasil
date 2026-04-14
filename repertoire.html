@@ -4,11 +4,31 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Repertório</title>
 
 <link rel="stylesheet" href="css/style.css">
+
+<style>
+
+.song{
+background:#1e293b;
+padding:15px;
+margin:12px;
+border-radius:8px;
+}
+
+audio{
+width:100%;
+margin-top:5px;
+}
+
+a{
+color:#4ade80;
+}
+
+</style>
 
 </head>
 
@@ -16,10 +36,48 @@
 
 <h1>🎧 Repertório</h1>
 
-<div id="songs" class="song-grid"></div>
+<div id="songs"></div>
 
-<script src="js/repertoire.js"></script>
+<script>
+
+fetch("data/songs.json")
+.then(r=>r.json())
+.then(songs=>{
+
+const container=document.getElementById("songs")
+
+songs.forEach(song=>{
+
+const div=document.createElement("div")
+div.className="song"
+
+div.innerHTML=`
+
+<h2>${song.title}</h2>
+
+<a href="pdf/${song.file}.pdf" target="_blank">📄 Noten PDF</a>
+
+<h4>Sopran</h4>
+<audio controls src="audio/${song.file}/soprano.mp3"></audio>
+
+<h4>Alt</h4>
+<audio controls src="audio/${song.file}/alto.mp3"></audio>
+
+<h4>Tenor</h4>
+<audio controls src="audio/${song.file}/tenor.mp3"></audio>
+
+<h4>Bass</h4>
+<audio controls src="audio/${song.file}/bass.mp3"></audio>
+
+`
+
+container.appendChild(div)
+
+})
+
+})
+
+</script>
 
 </body>
-
 </html>
