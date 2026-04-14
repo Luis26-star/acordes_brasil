@@ -1,37 +1,16 @@
-songs.forEach(song => {
-
-const div = document.createElement("div")
-div.className = "song"
-
-const cover = song.cover ? song.cover : ""
-const score = song.score ? song.score : "#"
-
-div.innerHTML = `
-
-<img src="${cover}" alt="${song.title}">
-
-<div class="song-info">
-
-<h2>${song.title}</h2>
-
-<a href="${score}" target="_blank">📄 Noten PDF</a>
-
-<h4>Sopran</h4>
-<audio controls src="audio/${song.folder}/soprano.mp3"></audio>
-
-<h4>Alt</h4>
-<audio controls src="audio/${song.folder}/alto.mp3"></audio>
-
-<h4>Tenor</h4>
-<audio controls src="audio/${song.folder}/tenor.mp3"></audio>
-
-<h4>Bass</h4>
-<audio controls src="audio/${song.folder}/bass.mp3"></audio>
-
-</div>
-
-`
-
-container.appendChild(div)
-
-})
+[
+  {
+    "title": "Canto de Ossanha",
+    "folder": "canto_de_ossanha",
+    "cover": "images/covers/ossanha.jpg",
+    "score": "scores/canto_de_ossanha.pdf",
+    "referencePitch": 440
+  },
+  {
+    "title": "Mas que Nada",
+    "folder": "mas_que_nada",
+    "cover": "images/covers/masquena.jpg",
+    "score": "scores/mas_que_nada.pdf",
+    "referencePitch": 392
+  }
+]
