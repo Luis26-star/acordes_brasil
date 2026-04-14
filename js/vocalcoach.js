@@ -54,9 +54,16 @@ document.getElementById("voice").innerText =
 "Stimme: —"
 
 }else{
-
+  
+if(pitch > 0){
 document.getElementById("pitch").innerText =
 "Tonhöhe: " + Math.round(pitch) + " Hz"
+}else{
+document.getElementById("pitch").innerText =
+"Tonhöhe: —"
+}
+  
+  
 
 const voice = detectVoice(pitch)
 
