@@ -51,6 +51,20 @@ onerror="this.src='images/default-cover.jpg'">
 ▶ Alle Stimmen starten
 </button>
 
+  <div class="loop-controls">
+
+Start (Sek)
+<input type="number" id="${song.folder}-start" value="0">
+
+Ende (Sek)
+<input type="number" id="${song.folder}-end" value="30">
+
+<button onclick="startLoop('${song.folder}')">
+🔁 Loop starten
+</button>
+
+</div>
+
 <h4>Sopran</h4>
 
   <button onclick="soloVoice('${song.folder}','soprano')">
@@ -63,7 +77,42 @@ max="1"
 step="0.1"
 value="1"
 oninput="setVolume('${song.folder}','soprano',this.value)">
+function startLoop(song){
 
+const start = parseFloat(
+document.getElementById(song+"-start").value
+)
+
+const end = parseFloat(
+document.getElementById(song+"-end").value
+)
+
+const voices=["soprano","alto","tenor","bass"]
+
+voices.forEach(v=>{
+
+const audio=document.getElementById(song+"-"+v)
+
+if(audio){
+
+audio.currentTime=start
+audio.play()
+
+audio.ontimeupdate=function(){
+
+if(audio.currentTime>=end){
+audio.currentTime=start
+}
+
+}
+
+}
+
+})
+
+}
+
+  
   function soloVoice(song,voice){
 
 const voices=["soprano","alto","tenor","bass"]
