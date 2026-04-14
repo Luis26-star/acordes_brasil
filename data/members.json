@@ -1,18 +1,12 @@
 [
-{
-"name": "Maria",
-"voice": "Sopran"
-},
-{
-"name": "João",
-"voice": "Tenor"
-},
-{
-"name": "Ana",
-"voice": "Alt"
-},
-{
-"name": "Carlos",
-"voice": "Bass"
-}
-]
+{"voice":"Sopran"},
+{"voice":"Sopran"},
+{"voice":"Sopran"},
+
+{"voice":"Alt"},
+{"voice":"Alt"},
+
+{"voice":"Tenor"},
+{"voice":"Tenor"},
+
+{"voice":"Bass"}
