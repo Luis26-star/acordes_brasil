@@ -204,3 +204,18 @@ return "Sopran"
 return "—"
 
 }
+function freqToNote(freq){
+
+if(!freq || freq <= 0) return "-"
+
+const noteNames = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
+
+const A4 = 440
+const semitones = Math.round(12 * Math.log2(freq / A4))
+
+const noteIndex = (semitones + 9 + 120) % 12
+const octave = 4 + Math.floor((semitones + 9) / 12)
+
+return noteNames[noteIndex] + octave
+
+}
