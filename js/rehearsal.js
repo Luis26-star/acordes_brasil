@@ -1,3 +1,7 @@
+function formatDate(dateString) {
+  const d = new Date(dateString)
+  return d.toLocaleDateString("de-DE")
+}
 fetch("data/rehearsals.json")
   .then(res => res.json())
   .then(data => {
