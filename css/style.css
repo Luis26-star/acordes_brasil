@@ -132,3 +132,57 @@ color:#4ade80;
 font-weight:bold;
 text-decoration:none;
 }
+.song-container{
+display:flex;
+flex-direction:column;
+gap:30px;
+}
+
+.song-card{
+display:flex;
+gap:30px;
+background:#1e293b;
+padding:25px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,0.4);
+}
+
+.song-left img{
+width:180px;
+border-radius:10px;
+}
+
+.song-right{
+flex:1;
+}
+
+.song-right h2{
+margin-top:0;
+}
+
+.score{
+display:inline-block;
+margin:10px 0;
+color:#4ade80;
+font-weight:bold;
+}
+
+button{
+background:#22c55e;
+border:none;
+padding:12px 18px;
+border-radius:8px;
+color:white;
+font-weight:bold;
+cursor:pointer;
+margin:10px 0;
+}
+
+button:hover{
+background:#16a34a;
+}
+
+audio{
+width:100%;
+margin-bottom:10px;
+}
