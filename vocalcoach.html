@@ -2,36 +2,29 @@
 <html lang="pt-br">
 
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI Vocal Coach</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Vocal Coach</title>
 
 <link rel="stylesheet" href="css/style.css">
+
 </head>
 
 <body>
 
 <h1>🎤 AI Vocal Coach</h1>
 
-<p>Probeaufnahme hochladen</p>
+<p>Singe eine Note – die App erkennt die Tonhöhe.</p>
 
-<input type="file" id="audioFile" accept="audio/*">
+<button onclick="startMic()">🎙 Mikrofon starten</button>
 
-<br><br>
+<h2 id="note">Note: -</h2>
+<h3 id="pitch">Hz: -</h3>
+<h3 id="status">Status: -</h3>
 
-  <button onclick="startListening()">🎤 Live Analyse starten</button>
-
-<button onclick="stopListening()">⏹ Stop</button>
-
-<h2>Analyse</h2>
-
-<div id="pitch">Tonhöhe: -</div>
-<div id="voice">Stimme: -</div>
-<div id="volume">Lautstärke: -</div>
-
-<canvas id="visualizer" width="600" height="200"></canvas>
-  <script src="js/vocalcoach.js"></script>
+<script src="js/vocalcoach.js"></script>
 
 </body>
-
 </html>
