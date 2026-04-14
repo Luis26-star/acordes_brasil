@@ -14,10 +14,10 @@
     "referencePitch": 392
   },
   {
-"title":"Aquarela do Brasil",
-"folder":"aquarela_do_brasil",
-"cover":"images/covers/aquarela.jpg",
-"score":"scores/aquarela.pdf",
-"referencePitch":440
-}
+    "title":"Aquarela do Brasil",
+    "folder":"aquarela_do_brasil",
+    "cover":"images/covers/aquarela.jpg",
+    "score":"scores/aquarela.pdf",
+    "referencePitch":440
+  }
 ]
