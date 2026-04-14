@@ -1,46 +1,29 @@
 fetch("data/members.json")
-.then(res => res.json())
-.then(members => {
+  .then(res => res.json())
+  .then(members => {
 
-const voices = {
-"Sopran":0,
-"Alt":0,
-"Tenor":0,
-"Bass":0
-}
+    const container = document.getElementById("membersList")
 
-members.forEach(m => {
+    members.forEach(member => {
 
-if(voices[m.voice] !== undefined){
-voices[m.voice]++
-}
+      const div = document.createElement("div")
 
-})
+      let colorClass = ""
 
-const container = document.getElementById("members")
+      if (member.voice === "Sopran") colorClass = "sopran"
+      if (member.voice === "Alt") colorClass = "alt"
+      if (member.voice === "Tenor") colorClass = "tenor"
+      if (member.voice === "Bass") colorClass = "bass"
 
-container.innerHTML = `
+      div.className = "member " + colorClass
 
-<div class="voice-card">
-<h2>Sopran</h2>
-<p>${voices.Sopran} Sängerinnen</p>
-</div>
+      div.innerHTML = `
+        <strong>${member.name}</strong><br>
+        ${member.voice}
+      `
 
-<div class="voice-card">
-<h2>Alt</h2>
-<p>${voices.Alt} Sängerinnen</p>
-</div>
+      container.appendChild(div)
 
-<div class="voice-card">
-<h2>Tenor</h2>
-<p>${voices.Tenor} Sänger</p>
-</div>
+    })
 
-<div class="voice-card">
-<h2>Bass</h2>
-<p>${voices.Bass} Sänger</p>
-</div>
-
-`
-
-})
+  })
