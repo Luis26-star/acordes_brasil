@@ -14,7 +14,7 @@ fetch("data/rehearsals.json")
       const div = document.createElement("div")
       div.className = "rehearsal"
 
-      const songs = r.songs.map(song => "<li>" + song + "</li>").join("")
+      const songs = (r.songs || [] .map(song => "<li>" + song + "</li>").join("")
 
       div.innerHTML = `
         <h2>📅 ${formatDate(r.date)}</h2>
