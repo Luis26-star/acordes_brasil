@@ -52,21 +52,54 @@ onerror="this.src='images/default-cover.jpg'">
 </button>
 
 <h4>Sopran</h4>
-<audio id="${song.folder}-soprano" controls
-src="audio/${song.folder}/soprano.mp3"></audio>
 
-<h4>Alt</h4>
-<audio id="${song.folder}-alto" controls
+<input type="range"
+min="0"
+max="1"
+step="0.1"
+value="1"
+oninput="setVolume('${song.folder}','soprano',this.value)">
+
+<audio id="${song.folder}-soprano"
+src="audio/${song.folder}/soprano.mp3"></audio>
+  
+  <h4>Alt</h4>
+
+<input type="range"
+min="0"
+max="1"
+step="0.1"
+value="1"
+oninput="setVolume('${song.folder}','alto',this.value)">
+
+<audio id="${song.folder}-alto"
 src="audio/${song.folder}/alto.mp3"></audio>
 
-<h4>Tenor</h4>
-<audio id="${song.folder}-tenor" controls
+  
+  <h4>Tenor</h4>
+
+<input type="range"
+min="0"
+max="1"
+step="0.1"
+value="1"
+oninput="setVolume('${song.folder}','tenor',this.value)">
+
+<audio id="${song.folder}-tenor"
 src="audio/${song.folder}/tenor.mp3"></audio>
 
-<h4>Bass</h4>
-<audio id="${song.folder}-bass" controls
-src="audio/${song.folder}/bass.mp3"></audio>
+  <h4>Bass</h4>
 
+<input type="range"
+min="0"
+max="1"
+step="0.1"
+value="1"
+oninput="setVolume('${song.folder}','bass',this.value)">
+
+<audio id="${song.folder}-bass"
+src="audio/${song.folder}/bass.mp3"></audio>
+  
 </div>
 `
 
