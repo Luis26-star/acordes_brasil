@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="pt-br">
 
 <head>
 <meta charset="UTF-8">
@@ -37,9 +37,11 @@ border-radius:6px;
 
 <h1>👥 Mitglieder</h1>
 
-<div id="membersList"></div>
+<div id="members"></div>
 
-<script>
+<script src=js.members.js"></script>
+</body>
+</html>
 
 fetch("data/members.json")
 .then(response => response.json())
@@ -69,6 +71,10 @@ container.appendChild(div)
 })
 
 </script>
+  
+  <script src="js/members.js">
+    
+  </script>
 
 </body>
 </html>
