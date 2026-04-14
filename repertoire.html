@@ -53,6 +53,10 @@ onerror="this.src='images/default-cover.jpg'">
 
 <h4>Sopran</h4>
 
+  <button onclick="soloVoice('${song.folder}','soprano')">
+🎤 Solo
+</button>
+  
 <input type="range"
 min="0"
 max="1"
@@ -62,9 +66,14 @@ oninput="setVolume('${song.folder}','soprano',this.value)">
 
 <audio id="${song.folder}-soprano"
 src="audio/${song.folder}/soprano.mp3"></audio>
+
   
   <h4>Alt</h4>
 
+  <button onclick="soloVoice('${song.folder}','alto')">
+🎤 Solo
+</button>
+  
 <input type="range"
 min="0"
 max="1"
@@ -78,6 +87,10 @@ src="audio/${song.folder}/alto.mp3"></audio>
   
   <h4>Tenor</h4>
 
+  <button onclick="soloVoice('${song.folder}','tenor')">
+🎤 Solo
+</button>
+  
 <input type="range"
 min="0"
 max="1"
@@ -89,6 +102,11 @@ oninput="setVolume('${song.folder}','tenor',this.value)">
 src="audio/${song.folder}/tenor.mp3"></audio>
 
   <h4>Bass</h4>
+
+  
+  <button onclick="soloVoice('${song.folder}','bass')">
+🎤 Solo
+</button>
 
 <input type="range"
 min="0"
