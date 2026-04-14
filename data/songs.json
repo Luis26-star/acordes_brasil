@@ -2,16 +2,16 @@
 {
 "title": "Canto de Ossanha",
 "folder": "canto_de_ossanha",
-"cover": "images/covers/ossanha.jpg"
-  "score":"scores/canto_de_ossanha.pdf"
-  "referencePitch":440
+"cover": "images/covers/ossanha.jpg",
+"score": "scores/canto_de_ossanha.pdf",
+"referencePitch": 440
 },
 
 {
 "title": "Mas que Nada",
 "folder": "mas_que_nada",
-"cover": "images/covers/masquena.jpg"
-  "score":"scores/mas_que_nada.pdf"
-  "referencePitch":392
+"cover": "images/covers/masquena.jpg",
+"score": "scores/mas_que_nada.pdf",
+"referencePitch": 392
 }
 ]
