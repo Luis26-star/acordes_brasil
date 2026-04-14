@@ -1,3 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Repertório</title>
+
+<style>
+
+body{
+font-family:Arial, sans-serif;
+background:linear-gradient(135deg,#0B1F3B,#1E3A8A);
+color:white;
+padding:20px;
+margin:0;
+}
+
+h1{
+font-size:32px;
+margin-bottom:20px;
+text-align:center;
+}
+
+.song{
+display:flex;
+gap:20px;
+background:#1e293b;
+padding:20px;
+margin:20px auto;
+border-radius:12px;
+max-width:900px;
+box-shadow:0 5px 15px rgba(0,0,0,0.4);
+}
+
+.song img{
+width:140px;
+border-radius:10px;
+}
+
+.song-info{
+flex:1;
+}
+
+.song h2{
+margin-top:0;
+}
+
+button{
+background:#22c55e;
+border:none;
+padding:10px 15px;
+border-radius:8px;
+color:white;
+font-weight:bold;
+cursor:pointer;
+margin:10px 0;
+}
+
+button:hover{
+background:#16a34a;
+}
+
+audio{
+width:100%;
+margin-bottom:10px;
+}
+
+a{
+color:#4ade80;
+font-weight:bold;
+text-decoration:none;
+}
+
+</style>
+
+</head>
+
 <body>
 
 <h1>🎧 Repertório</h1>
@@ -6,21 +86,16 @@
 
 <script>
 
-
-console.log("Repertoire script started")
-
 fetch("data/songs.json")
 .then(response => response.json())
 .then(songs => {
-
-console.log("Songs geladen:", songs)
 
 const container = document.getElementById("songs")
 
 songs.forEach(song => {
 
 const div = document.createElement("div")
-div.className="song"
+div.className = "song"
 
 div.innerHTML = `
 
@@ -31,6 +106,8 @@ div.innerHTML = `
 <h2>${song.title}</h2>
 
 <a href="${song.score}" target="_blank">📄 Noten PDF</a>
+
+<br><br>
 
 <button onclick="playAll('${song.folder}')">
 ▶ Alle Stimmen starten
@@ -63,14 +140,14 @@ console.error("Fehler beim Laden der Songs:", error)
 
 function playAll(song){
 
-const voices=["soprano","alto","tenor","bass"]
+const voices = ["soprano","alto","tenor","bass"]
 
-voices.forEach(v=>{
+voices.forEach(v => {
 
-const audio=document.getElementById(song+"-"+v)
+const audio = document.getElementById(song + "-" + v)
 
 if(audio){
-audio.currentTime=0
+audio.currentTime = 0
 audio.play()
 }
 
@@ -79,3 +156,6 @@ audio.play()
 }
 
 </script>
+
+</body>
+</html>
