@@ -157,6 +157,19 @@ div.innerHTML = `
 <br><br>
 
 <button onclick="playAll('${song.folder}')">
+
+function setVolume(song,voice,value){
+
+const audio = document.getElementById(song+"-"+voice)
+
+if(audio){
+audio.volume = value
+}
+
+}
+
+
+  
 ▶ Alle Stimmen starten
 </button>
 
