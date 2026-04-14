@@ -58,7 +58,14 @@ document.getElementById("voice").innerText =
 if(pitch > 0){
 document.getElementById("pitch").innerText =
 "Tonhöhe: " + Math.round(pitch) + " Hz"
+
+const note = freqToNote(pitch)
+
+document.getElementById("note").innerText =
+"Note: " + note
+  
 }else{
+  
 document.getElementById("pitch").innerText =
 "Tonhöhe: —"
 }
