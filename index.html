@@ -1,21 +1,68 @@
 <!DOCTYPE html>
 <html lang="de">
-
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>Acordes Brasil</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acordes Brasil – Chor App</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
+<h1>🎵 Acordes Brasil</h1>
+<div class="nav-buttons">
+    <button class="nav-btn" onclick="showSection('player')">🎤 Stimmen-Trainer</button>
+    <button class="nav-btn" onclick="showSection('members')">👥 Mitglieder</button>
+    <button class="nav-btn" onclick="showSection('rehearsals')">📅 Proben</button>
+</div>
 
-<h1>🇧🇷 Acordes Brasil</h1>
-<p>Brasilianischer Chor</p>
+<!-- PLAYER SECTION -->
+<div id="playerSection">
+    <div class="card">
+        <h2>🎧 Stimmen-Trainer</h2>
+        <select id="songSelect" onchange="player.changeSong(this.value)"></select>
+        <audio id="soprano"></audio><audio id="alto"></audio>
+        <audio id="tenor"></audio><audio id="bass"></audio>
+        <div class="voice-buttons">
+            <button class="voice-btn sopran" onclick="player.playVoice('soprano')">🎵 Sopran</button>
+            <button class="voice-btn alt" onclick="player.playVoice('alto')">🎵 Alt</button>
+            <button class="voice-btn tenor" onclick="player.playVoice('tenor')">🎵 Tenor</button>
+            <button class="voice-btn bass" onclick="player.playVoice('bass')">🎵 Bass</button>
+        </div>
+        <div style="text-align:center">
+            <button class="control-btn" onclick="player.playAll()">▶ Alle Stimmen</button>
+            <button class="control-btn" onclick="player.stopAll()">⏹ Stopp</button>
+        </div>
+        <div class="progress-bar" onclick="player.seekProgress(event)">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div><span id="currentTime">0:00</span> / <span id="duration">0:00</span></div>
+        <div><input type="range" id="tempoSlider" min="0.5" max="2" step="0.05" value="1" oninput="player.setTempo(this.value)"></div>
+        <div id="statusMsg" class="status-msg">✅ Bereit</div>
+    </div>
+</div>
 
-<a href="dashboard.html">App öffnen</a>
+<!-- MEMBERS SECTION -->
+<div id="membersSection" style="display:none">
+    <div class="card">
+        <h2>👥 Mitglieder</h2>
+        <input id="memberName" placeholder="Name">
+        <select id="memberVoice"><option>Sopran</option><option>Alt</option><option>Tenor</option><option>Bass</option></select>
+        <button onclick="addMember()">➕ Hinzufügen</button>
+        <div id="membersList"></div>
+    </div>
+</div>
 
+<!-- REHEARSALS SECTION -->
+<div id="rehearsalsSection" style="display:none">
+    <div class="card">
+        <h2>📅 Probenplan</h2>
+        <input id="rehearsalDate" type="date"><input id="rehearsalTime" type="time">
+        <input id="rehearsalLocation" placeholder="Ort"><input id="rehearsalSongs" placeholder="Stücke">
+        <button onclick="addRehearsal()">📌 Speichern</button>
+        <div id="rehearsalsList"></div>
+    </div>
+</div>
+
+<footer>Acordes Brasil © <span id="year"></span></footer>
+<script type="module" src="js/app.js"></script>
 </body>
 </html>
