@@ -8,7 +8,7 @@ let loopStart = 0;
 let loopEnd = 0;
 let updateInterval = null;
 
-// ========== FORMAT TIME FUNKTION ==========
+// Format Time Funktion
 function formatTime(sec) {
     if (isNaN(sec)) return "0:00";
     const m = Math.floor(sec / 60);
@@ -16,7 +16,7 @@ function formatTime(sec) {
     return `${m}:${s.toString().padStart(2, '0')}`;
 }
 
-// ========== PROGRESS UPDATE ==========
+// Progress Update
 export function updateProgress() {
     const bar = document.getElementById("progressFill");
     const ref = document.getElementById("soprano");
@@ -35,17 +35,20 @@ export function updateProgress() {
     }, 200);
 }
 
-// ========== INIT PLAYER ==========
+// ========== INIT PLAYER (MIT VERBESSERTEM LOOP) ==========
 export function initPlayer() {
     voices.forEach(v => {
         const a = document.getElementById(v);
         if (a) {
             a.src = `${STORAGE}/${currentSong}/${v}.mp3`;
+            
+            // ð¥ VERBESSERTER LOOP CODE ð¥
             a.ontimeupdate = () => {
                 if (loopActive && a.currentTime >= loopEnd) {
                     a.currentTime = loopStart;
                 }
             };
+            
             a.onerror = () => {
                 document.getElementById("statusMsg").innerText = "â ï¸ Audio fehlt: " + v;
             };
@@ -54,7 +57,7 @@ export function initPlayer() {
     updateProgress();
 }
 
-// ========== CHANGE SONG ==========
+// Change Song
 export function changeSong(song) {
     currentSong = song;
     voices.forEach(v => {
@@ -68,7 +71,7 @@ export function changeSong(song) {
     document.getElementById("statusMsg").innerHTML = `â Song gewechselt`;
 }
 
-// ========== PLAY ALL ==========
+// Play All
 export function playAll() {
     const ref = document.getElementById("soprano");
     if (!ref) return;
@@ -84,7 +87,7 @@ export function playAll() {
     });
 }
 
-// ========== STOP ALL ==========
+// Stop All
 export function stopAll() {
     voices.forEach(v => {
         const a = document.getElementById(v);
@@ -97,7 +100,7 @@ export function stopAll() {
     document.getElementById("statusMsg").innerHTML = "â¹ Gestoppt";
 }
 
-// ========== PLAY SINGLE VOICE ==========
+// Play Single Voice
 export function playVoice(v) {
     stopAll();
     const a = document.getElementById(v);
@@ -110,7 +113,7 @@ export function playVoice(v) {
     document.getElementById("statusMsg").innerHTML = `ðµ Spielt: ${names[v]}`;
 }
 
-// ========== SET TEMPO ==========
+// Set Tempo
 export function setTempo(val) {
     const tempo = parseFloat(val);
     document.getElementById("tempoValue").innerText = tempo.toFixed(2) + "x";
@@ -120,7 +123,7 @@ export function setTempo(val) {
     });
 }
 
-// ========== LOOP CONTROLS ==========
+// Start Loop
 export function startLoop(start, end) {
     loopStart = parseFloat(start);
     loopEnd = parseFloat(end);
@@ -132,12 +135,13 @@ export function startLoop(start, end) {
     document.getElementById("statusMsg").innerHTML = `ð Loop: ${loopStart}s â ${loopEnd}s`;
 }
 
+// Stop Loop
 export function stopLoop() {
     loopActive = false;
     document.getElementById("statusMsg").innerHTML = "â¹ Loop gestoppt";
 }
 
-// ========== SEEK PROGRESS ==========
+// Seek Progress
 export function seekProgress(event) {
     const bar = document.getElementById("progressBarContainer");
     if (!bar) return;
