@@ -3,26 +3,75 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-<title>Administração – Acordes Brasil</title>
+<title>Administração – Acordes Brasil</title>
 <link rel="stylesheet" href="../css/style.css" />
+<!-- Du kannst hier dein generelles Style-File einbinden -->
 <script type="module" src="../js/admin.js"></script>
 </head>
 
 <body>
-<header><h1>🧭 Painel do Coral</h1></header>
-<main>
-  <section>
-    <h2>Ferramentas</h2>
-    <ul>
-      <li>📋 Gerenciar membros</li>
-      <li>📅 Calendário do coral</li>
-      <li>💾 Uploads e partituras</li>
-      <li>💰 Doações e financeiro</li>
-      <li>📊 Relatórios automáticos</li>
-    </ul>
+<header>
+  <h1>🧭 Painel do Coral – Administração</h1>
+</header>
+
+<main class="container">
+
+  <!-- DASHBOARD-ÜBERSICHT -->
+  <section class="card">
+    <h2>📋 Provas e Ensaios</h2>
+    <div style="text-align:right;margin-bottom:10px">
+      <button class="control-btn" onclick="openModal('rehearsalModal')">➕ Nova Prova</button>
+      <button class="control-btn" onclick="exportAllData()">💾 Exportar JSON</button>
+    </div>
+
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>📅 Data</th>
+          <th>⏰ Hora</th>
+          <th>📍 Local</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="rehearsalsTableBody">
+        <tr><td colspan="4">Carregando…</td></tr>
+      </tbody>
+    </table>
   </section>
-  <button id="logoutBtn">Sair</button>
+
+  <!-- Outras seções podem vir aqui, p.ex. Membros, Eventos etc. -->
+
 </main>
+
+<!-- MODAL NOVA PROVA -->
+<div id="rehearsalModal" class="modal" style="display:none">
+  <div class="modal-content card" style="max-width:400px;margin:auto">
+    <h3>✏️ Nova Prova / Editar Prova</h3>
+    <label>Data:</label>
+    <input type="date" id="rehearsalDate" />
+    <label>Hora:</label>
+    <input type="time" id="rehearsalTime" />
+    <label>Local:</label>
+    <input type="text" id="rehearsalLocation" placeholder="ex.: Igreja Central" />
+    <div style="margin-top:15px;text-align:right">
+      <button class="control-btn" onclick="closeModal('rehearsalModal')">❌ Cancelar</button>
+      <button class="control-btn" onclick="saveRehearsal()">💾 Salvar</button>
+    </div>
+  </div>
+</div>
+
+<footer style="text-align:center;margin-top:40px;opacity:0.8">
+  © 2024 Acordes Brasil – Área Administrativa
+</footer>
+
+<script>
+// ================ MODAL OPEN/CLOSE UTILS ================
+window.openModal = function(id){
+  document.getElementById(id).style.display='block';
+}
+window.closeModal = function(id){
+  document.getElementById(id).style.display='none';
+}
+</script>
 </body>
 </html>
-
