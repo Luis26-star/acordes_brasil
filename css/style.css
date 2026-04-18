@@ -34,7 +34,7 @@ header {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    display:online-block;
+    display:inline-block;
 }
 
 .logo p {
