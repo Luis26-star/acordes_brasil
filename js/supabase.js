@@ -13,11 +13,8 @@ if (!isConfigured) {
   console.warn("⚠️ Supabase nicht konfiguriert – Demo-Modus aktiv");
 }
 
-export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
-  auth: {
-    persistSession: true,
-    storageKey: 'acordes-auth'
-  }
+export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+}
 });
 
 export const isSupabaseConfigured = isConfigured;
