@@ -1,0 +1,135 @@
+<script>
+let currentSong = "canto_de_ossanha";
+
+const voices = {
+  soprano: new Audio(),
+  alto: new Audio(),
+  tenor: new Audio(),
+  bass: new Audio()
+};
+
+// ==================== INIT ====================
+function loadSong(song) {
+  currentSong = song;
+
+  Object.keys(voices).forEach(v => {
+    // 🔥 WICHTIG: einfacher Pfad
+    voices[v].src = `audio/${v}.mp3`;
+    voices[v].preload = "auto";
+  });
+
+  document.getElementById('karaokeStatus').innerHTML =
+    `✅ Song geladen`;
+}
+
+// ==================== PLAY SINGLE ====================
+window.trainVoice = async function(voice) {
+  stopAllAudio();
+
+  const audio = voices[voice];
+
+  try {
+    await audio.play(); // 🔥 wichtig für iPad
+  } catch (err) {
+    document.getElementById('karaokeStatus').innerHTML =
+      "⚠️ Tippe zuerst auf den Bildschirm!";
+    return;
+  }
+
+  syncProgress(audio);
+
+  document.getElementById('karaokeStatus').innerHTML =
+    `🎵 ${voice}`;
+};
+
+// ==================== PLAY ALL ====================
+window.playAllVoices = async function() {
+  stopAllAudio();
+
+  try {
+    await Promise.all(Object.values(voices).map(a => a.play()));
+  } catch (e) {
+    document.getElementById('karaokeStatus').innerHTML =
+      "⚠️ Erst tippen!";
+    return;
+  }
+
+  syncProgress(voices.soprano);
+};
+
+// ==================== STOP ====================
+window.stopAllAudio = function() {
+  Object.values(voices).forEach(a => {
+    a.pause();
+    a.currentTime = 0;
+  });
+
+  clearInterval(progressInterval);
+  document.getElementById('progressFill').style.width = '0%';
+};
+
+// ==================== PROGRESS ====================
+let progressInterval = null;
+
+function syncProgress(audio) {
+  clearInterval(progressInterval);
+
+  progressInterval = setInterval(() => {
+    if (!audio.duration) return;
+
+    const percent = (audio.currentTime / audio.duration) * 100;
+
+    document.getElementById('progressFill').style.width =
+      percent + '%';
+
+    document.getElementById('currentTime').innerText =
+      formatTime(audio.currentTime);
+
+    document.getElementById('duration').innerText =
+      formatTime(audio.duration);
+  }, 200);
+}
+
+// ==================== SEEK ====================
+window.seekProgress = function(event) {
+  const bar = event.currentTarget; // 🔥 FIX
+  const rect = bar.getBoundingClientRect();
+  const percent = (event.clientX - rect.left) / rect.width;
+
+  Object.values(voices).forEach(a => {
+    if (a.duration) {
+      a.currentTime = percent * a.duration;
+    }
+  });
+};
+
+// ==================== LOOP ====================
+let loopActive = false;
+
+window.toggleLoop = function() {
+  loopActive = !loopActive;
+
+  Object.values(voices).forEach(a => {
+    a.ontimeupdate = loopActive
+      ? () => {
+          if (a.currentTime >= 10) a.currentTime = 0;
+        }
+      : null;
+  });
+};
+
+// ==================== TIME ====================
+function formatTime(sec) {
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return `${m}:${s.toString().padStart(2, '0')}`;
+}
+
+// ==================== INIT ====================
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("year").innerText =
+    new Date().getFullYear();
+
+  loadSong(currentSong);
+});
+</script>
