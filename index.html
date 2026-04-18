@@ -2,11 +2,10 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Acordes Brasil – Pro Chor Mixer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acordes Brasil – KI Notenleser mit Sound</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   body {
     font-family: 'Segoe UI', system-ui, sans-serif;
     background: linear-gradient(135deg, #0B2F1F 0%, #1A3A2A 100%);
@@ -14,9 +13,7 @@
     min-height: 100vh;
     padding: 20px;
   }
-
   .container { max-width: 1200px; margin: 0 auto; }
-
   h1 {
     text-align: center;
     font-size: 2.5rem;
@@ -24,21 +21,10 @@
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
-    margin-bottom: 10px;
   }
-
   .subhead { text-align: center; opacity: 0.8; margin-bottom: 30px; }
-
-  .two-columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-  }
-
-  @media (max-width: 900px) {
-    .two-columns { grid-template-columns: 1fr; }
-  }
-
+  .two-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 900px) { .two-columns { grid-template-columns: 1fr; } }
   .card {
     background: rgba(255,255,255,0.1);
     backdrop-filter: blur(10px);
@@ -46,7 +32,6 @@
     padding: 24px;
     margin-bottom: 20px;
   }
-
   .upload-area {
     border: 2px dashed #FFD700;
     border-radius: 20px;
@@ -57,7 +42,6 @@
     margin-bottom: 20px;
   }
   .upload-area:hover { background: rgba(255,215,0,0.1); transform: scale(1.02); }
-
   .voice-buttons {
     display: flex;
     flex-wrap: wrap;
@@ -65,7 +49,6 @@
     margin: 20px 0;
     justify-content: center;
   }
-
   .voice-btn {
     padding: 12px 24px;
     border: none;
@@ -80,7 +63,6 @@
   .tenor { background: #42A5F5; color: white; }
   .bass { background: #EF5350; color: white; }
   .play-all { background: #8B5CF6; color: white; }
-
   .control-btn {
     background: #FFD700;
     color: #0B2F1F;
@@ -91,8 +73,6 @@
     cursor: pointer;
     margin: 5px;
   }
-
-  /* Mixer Styles */
   .mixer-row {
     display: grid;
     grid-template-columns: 80px 1fr 60px 60px;
@@ -103,145 +83,61 @@
     padding: 8px 12px;
     border-radius: 12px;
   }
-  .mixer-row input[type="range"] {
-    width: 100%;
-    height: 6px;
-    border-radius: 3px;
-    background: #FFD700;
-  }
-  .mixer-btn {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.2s;
-  }
-  .mixer-btn:hover { transform: scale(1.05); }
+  .mixer-row input[type="range"] { width: 100%; height: 6px; border-radius: 3px; background: #FFD700; }
+  .mixer-btn { padding: 6px 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
   .solo { background: #8B5CF6; color: white; }
   .solo.active { background: #6D28D9; box-shadow: 0 0 10px #8B5CF6; }
   .mute { background: #ef4444; color: white; }
   .mute.active { background: #dc2626; box-shadow: 0 0 10px #ef4444; }
-
-  .progress-bar {
-    width: 100%;
-    height: 12px;
-    background: rgba(255,255,255,0.3);
-    border-radius: 10px;
-    cursor: pointer;
-    margin: 15px 0;
-  }
-  .progress-fill {
-    height: 100%;
-    background: #FFD700;
-    border-radius: 10px;
-    width: 0%;
-    transition: width 0.1s linear;
-  }
-
-  .time-controls {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    margin: 15px 0;
-    flex-wrap: wrap;
-  }
-  .time-controls input {
-    padding: 8px;
-    border-radius: 8px;
-    border: none;
-    width: 80px;
-    text-align: center;
-  }
-
-  .lyrics-container {
-    background: rgba(0,0,0,0.3);
-    border-radius: 16px;
-    padding: 15px;
-    margin-top: 15px;
-    max-height: 200px;
-    overflow-y: auto;
-  }
-  .lyrics-line {
-    padding: 8px;
-    margin: 4px 0;
-    border-radius: 8px;
-    transition: all 0.2s;
-  }
-  .lyrics-line.active {
-    background: #FFD700;
-    color: #0B2F1F;
-    font-weight: bold;
-  }
-
-  .status-msg {
-    background: rgba(0,0,0,0.5);
-    padding: 12px;
-    border-radius: 50px;
-    text-align: center;
-    margin-top: 15px;
-  }
-
-  .note-badge {
-    display: inline-block;
-    background: rgba(0,0,0,0.5);
-    padding: 4px 8px;
-    border-radius: 20px;
-    font-size: 11px;
-    margin: 2px;
-  }
-
-  footer {
-    text-align: center;
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    font-size: 0.8rem;
-  }
+  .progress-bar { width: 100%; height: 12px; background: rgba(255,255,255,0.3); border-radius: 10px; cursor: pointer; margin: 15px 0; }
+  .progress-fill { height: 100%; background: #FFD700; border-radius: 10px; width: 0%; transition: width 0.1s linear; }
+  .time-controls { display: flex; gap: 10px; align-items: center; margin: 15px 0; flex-wrap: wrap; }
+  .time-controls input { padding: 8px; border-radius: 8px; border: none; width: 80px; text-align: center; }
+  .lyrics-container { background: rgba(0,0,0,0.3); border-radius: 16px; padding: 15px; margin-top: 15px; max-height: 200px; overflow-y: auto; }
+  .lyrics-line { padding: 8px; margin: 4px 0; border-radius: 8px; transition: all 0.2s; }
+  .lyrics-line.active { background: #FFD700; color: #0B2F1F; font-weight: bold; }
+  .status-msg { background: rgba(0,0,0,0.5); padding: 12px; border-radius: 50px; text-align: center; margin-top: 15px; }
+  .note-badge { display: inline-block; background: rgba(0,0,0,0.5); padding: 4px 8px; border-radius: 20px; font-size: 11px; margin: 2px; }
+  footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; }
 </style>
 </head>
 <body>
 <div class="container">
   <h1>🎵 Acordes Brasil</h1>
-  <div class="subhead">🎤 Pro Chor Mixer – Solo · Mute · Lautstärke · Karaoke</div>
+  <div class="subhead">🎤 KI-Notenleser – PDF hochladen, Noten erkennen & abspielen</div>
 
   <div class="two-columns">
-    <!-- Linke Spalte: PDF Upload & Mixer -->
     <div class="card">
       <h2>📄 1. PDF hochladen</h2>
       <div class="upload-area" onclick="document.getElementById('pdfInput').click()">
-        📁 PDF Datei hier klicken<br>
-        <small>(Noten werden automatisch erkannt)</small>
+        📁 PDF Datei hier klicken<br><small>(Noten werden erkannt & abgespielt)</small>
         <input type="file" id="pdfInput" accept="application/pdf" style="display:none" onchange="handlePDFUpload(this)">
       </div>
-      
       <div id="pdfStatus" class="status-msg">⏳ Warte auf PDF...</div>
-      
       <div id="voiceNotesDisplay" style="margin-top: 15px;"></div>
-
-      <!-- 🎛️ MIXER -->
+      
       <h3 style="margin-top: 20px;">🎛️ Chor Mixer</h3>
       <div id="mixer"></div>
+      
+      <button class="control-btn" onclick="playDetectedMelody()" style="width:100%; margin-top:10px;">🎵 Erkannte Melodie abspielen</button>
     </div>
 
-    <!-- Rechte Spalte: Karaoke Trainer -->
     <div class="card">
-      <h2>🎤 2. Stimmen-Training</h2>
+      <h2>🎤 2. Stimmen-Training & Karaoke</h2>
       
       <div class="voice-buttons">
-        <button class="voice-btn soprano" onclick="trainVoice('soprano')">🎵 Sopran</button>
-        <button class="voice-btn alto" onclick="trainVoice('alto')">🎵 Alt</button>
-        <button class="voice-btn tenor" onclick="trainVoice('tenor')">🎵 Tenor</button>
-        <button class="voice-btn bass" onclick="trainVoice('bass')">🎵 Bass</button>
+        <button class="voice-btn soprano" onclick="playVoice('soprano')">🎵 Sopran</button>
+        <button class="voice-btn alto" onclick="playVoice('alto')">🎵 Alt</button>
+        <button class="voice-btn tenor" onclick="playVoice('tenor')">🎵 Tenor</button>
+        <button class="voice-btn bass" onclick="playVoice('bass')">🎵 Bass</button>
         <button class="voice-btn play-all" onclick="playAllVoices()">🎶 Alle Stimmen</button>
       </div>
 
-      <!-- Zeitsteuerung -->
       <div class="time-controls">
         <span>🔄 Loop:</span>
-        <input type="number" id="loopStart" placeholder="Start (s)" value="0" step="0.5">
+        <input type="number" id="loopStart" placeholder="Start" value="0" step="0.5">
         <span>bis</span>
-        <input type="number" id="loopEnd" placeholder="Ende (s)" value="10" step="0.5">
+        <input type="number" id="loopEnd" placeholder="Ende" value="10" step="0.5">
         <button class="control-btn" onclick="toggleLoop()">🔁 Loop</button>
       </div>
 
@@ -253,14 +149,11 @@
         <span id="duration">0:00</span>
       </div>
 
-      <div style="text-align:center">
-        <button class="control-btn" onclick="stopAllAudio()">⏹ Stopp</button>
-      </div>
+      <button class="control-btn" onclick="stopAllAudio()" style="width:100%">⏹ Stopp</button>
 
-      <!-- Karaoke Text -->
       <div class="lyrics-container">
         <h3>📝 Songtext (Karaoke)</h3>
-        <textarea id="songText" rows="3" style="width:100%; padding:10px; border-radius:12px; margin-bottom:10px" placeholder="Text hier eingeben..."></textarea>
+        <textarea id="songText" rows="3" style="width:100%; padding:10px; border-radius:12px; margin-bottom:10px" placeholder="Text hier eingeben oder aus PDF extrahiert..."></textarea>
         <button class="control-btn" onclick="startKaraoke()">🎤 Karaoke starten</button>
         <div id="lyricsDisplay" style="margin-top:15px"></div>
       </div>
@@ -268,30 +161,123 @@
       <div id="karaokeStatus" class="status-msg">✅ Bereit – Lade ein PDF hoch!</div>
     </div>
   </div>
-
-  <footer>
-    Acordes Brasil – Pro Chor Mixer © <span id="year"></span>
-  </footer>
+  <footer>Acordes Brasil – KI Notenleser © <span id="year"></span></footer>
 </div>
 
 <script>
-  // ==================== AUDIO SETUP MIT MIXER ====================
-  const voices = {
-    soprano: { audio: new Audio(), gain: 1, muted: false, solo: false, name: 'Sopran', color: '#FFD700' },
-    alto:    { audio: new Audio(), gain: 1, muted: false, solo: false, name: 'Alt', color: '#66BB6A' },
-    tenor:   { audio: new Audio(), gain: 1, muted: false, solo: false, name: 'Tenor', color: '#42A5F5' },
-    bass:    { audio: new Audio(), gain: 1, muted: false, solo: false, name: 'Bass', color: '#EF5350' }
-  };
-  
-  let currentSong = "demo";
-  let loopActive = false;
-  let loopStart = 0;
-  let loopEnd = 0;
-  let currentInterval = null;
+  // ==================== AUDIO ENGINE ====================
+  let audioCtx = null;
+  let currentOscillators = [];
+  let currentMelodyInterval = null;
   let karaokeInterval = null;
+  let loopActive = false;
+  let loopStart = 0, loopEnd = 0;
   let currentPlayingVoice = null;
+  let isPlaying = false;
+  let currentDuration = 0;
+  let melodyStartTime = 0;
 
-  // Noten für jede Stimme (Demo)
+  // Noten-Frequenzen
+  const noteFreq = {
+    'C2': 65.41, 'D2': 73.42, 'E2': 82.41, 'F2': 87.31, 'G2': 98.00, 'A2': 110.00, 'B2': 123.47,
+    'C3': 130.81, 'D3': 146.83, 'E3': 164.81, 'F3': 174.61, 'G3': 196.00, 'A3': 220.00, 'B3': 246.94,
+    'C4': 261.63, 'D4': 293.66, 'E4': 329.63, 'F4': 349.23, 'G4': 392.00, 'A4': 440.00, 'B4': 493.88,
+    'C5': 523.25, 'D5': 587.33, 'E5': 659.25, 'F5': 698.46, 'G5': 783.99, 'A5': 880.00, 'B5': 987.77,
+    'C6': 1046.50
+  };
+
+  function getAudioContext() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  }
+
+  function playTone(frequency, duration = 0.8, volume = 0.3) {
+    const ctx = getAudioContext();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = 'sine';
+    osc.frequency.value = frequency;
+    gain.gain.value = volume;
+    osc.start();
+    gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + duration);
+    osc.stop(ctx.currentTime + duration);
+    currentOscillators.push(osc);
+    setTimeout(() => { currentOscillators = currentOscillators.filter(o => o !== osc); }, duration * 1000);
+    return ctx.currentTime;
+  }
+
+  function playNote(noteName, duration = 0.5) {
+    const freq = noteFreq[noteName];
+    if (freq) playTone(freq, duration);
+    else console.warn('Unbekannte Note:', noteName);
+  }
+
+  function playMelody(notes, tempo = 400) {
+    stopAllAudio();
+    const ctx = getAudioContext();
+    let time = ctx.currentTime;
+    const duration = 0.4;
+    const startTime = time;
+    
+    notes.forEach(note => {
+      const freq = noteFreq[note];
+      if (freq) {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        gain.gain.value = 0.25;
+        osc.start(time);
+        gain.gain.exponentialRampToValueAtTime(0.00001, time + duration);
+        osc.stop(time + duration);
+        currentOscillators.push(osc);
+      }
+      time += duration;
+    });
+    
+    currentDuration = time - startTime;
+    melodyStartTime = startTime;
+    isPlaying = true;
+    startProgressBar();
+    return currentDuration;
+  }
+
+  function startProgressBar() {
+    if (currentMelodyInterval) clearInterval(currentMelodyInterval);
+    const startTime = Date.now();
+    currentMelodyInterval = setInterval(() => {
+      if (!isPlaying) return;
+      const elapsed = (Date.now() - startTime) / 1000;
+      let percent = (elapsed / currentDuration) * 100;
+      if (loopActive && elapsed >= loopEnd) {
+        const loopLength = loopEnd - loopStart;
+        const loopPos = (elapsed - loopStart) % loopLength;
+        percent = ((loopStart + loopPos) / currentDuration) * 100;
+      }
+      percent = Math.min(100, Math.max(0, percent));
+      document.getElementById('progressFill').style.width = percent + '%';
+      document.getElementById('currentTime').innerText = formatTime(elapsed);
+      document.getElementById('duration').innerText = formatTime(currentDuration);
+      if (elapsed >= currentDuration && !loopActive) {
+        clearInterval(currentMelodyInterval);
+        isPlaying = false;
+      }
+    }, 100);
+  }
+
+  // ==================== MIXER & STIMMEN ====================
+  const voices = {
+    soprano: { gain: 1, muted: false, solo: false, name: 'Sopran', color: '#FFD700' },
+    alto:    { gain: 1, muted: false, solo: false, name: 'Alt', color: '#66BB6A' },
+    tenor:   { gain: 1, muted: false, solo: false, name: 'Tenor', color: '#42A5F5' },
+    bass:    { gain: 1, muted: false, solo: false, name: 'Bass', color: '#EF5350' }
+  };
+
   let voiceNotes = {
     soprano: ['C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6'],
     alto: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5'],
@@ -299,19 +285,17 @@
     bass: ['C2', 'D2', 'E2', 'F2', 'G2', 'A2', 'B2', 'C3']
   };
 
-  // ==================== MIXER FUNKTIONEN ====================
   function renderMixer() {
-    const container = document.getElementById("mixer");
+    const container = document.getElementById('mixer');
     if (!container) return;
-    container.innerHTML = "";
+    container.innerHTML = '';
     Object.keys(voices).forEach(voice => {
       const v = voices[voice];
-      const row = document.createElement("div");
-      row.className = "mixer-row";
+      const row = document.createElement('div');
+      row.className = 'mixer-row';
       row.innerHTML = `
         <strong style="color:${v.color}">${v.name}</strong>
-        <input type="range" min="0" max="1" step="0.01" value="${v.gain}"
-          oninput="setVolume('${voice}', this.value)">
+        <input type="range" min="0" max="1" step="0.01" value="${v.gain}" oninput="setVolume('${voice}', this.value)">
         <button class="mixer-btn solo ${v.solo ? 'active' : ''}" onclick="toggleSolo('${voice}')">S</button>
         <button class="mixer-btn mute ${v.muted ? 'active' : ''}" onclick="toggleMute('${voice}')">M</button>
       `;
@@ -319,131 +303,108 @@
     });
   }
 
-  window.setVolume = function(voice, val) {
-    voices[voice].gain = parseFloat(val);
-    updateVolumes();
-  };
+  window.setVolume = (voice, val) => { voices[voice].gain = parseFloat(val); };
+  window.toggleMute = (voice) => { voices[voice].muted = !voices[voice].muted; renderMixer(); };
+  window.toggleSolo = (voice) => { voices[voice].solo = !voices[voice].solo; renderMixer(); };
 
-  window.toggleMute = function(voice) {
-    voices[voice].muted = !voices[voice].muted;
-    updateVolumes();
-    renderMixer();
-  };
-
-  window.toggleSolo = function(voice) {
-    voices[voice].solo = !voices[voice].solo;
-    updateVolumes();
-    renderMixer();
-  };
-
-  function updateVolumes() {
-    const anySolo = Object.values(voices).some(v => v.solo);
-    Object.keys(voices).forEach(key => {
-      const v = voices[key];
-      let volume = v.gain;
-      if (v.muted) volume = 0;
-      if (anySolo && !v.solo) volume = 0;
-      v.audio.volume = volume;
-    });
+  function getVolumeMultiplier(voice) {
+    const v = voices[voice];
+    const anySolo = Object.values(voices).some(vv => vv.solo);
+    if (v.muted) return 0;
+    if (anySolo && !v.solo) return 0;
+    return v.gain;
   }
 
-  // ==================== AUDIO FUNKTIONEN ====================
-  function loadSong(song) {
-    currentSong = song;
-    Object.keys(voices).forEach(voice => {
-      const audio = voices[voice].audio;
-      audio.src = `audio/${song}/${voice}.mp3`;
-      audio.load();
-    });
-    renderMixer();
-  }
-
-  window.trainVoice = function(voice) {
+  window.playVoice = (voice) => {
     stopAllAudio();
     currentPlayingVoice = voice;
-    const audio = voices[voice].audio;
-    if (audio.src && audio.src !== window.location.href) {
-      audio.currentTime = 0;
-      audio.play().catch(e => console.log("Playback error:", e));
+    const notes = voiceNotes[voice];
+    if (notes && notes.length) {
+      playMelody(notes);
+      document.getElementById('karaokeStatus').innerHTML = `🎵 Trainiere: ${voices[voice].name} – ${notes.length} Noten`;
     } else {
-      // Demo-Ton wenn keine MP3 vorhanden
-      playDemoTone(voice);
+      playTone(440, 1);
+      document.getElementById('karaokeStatus').innerHTML = `🎵 ${voices[voice].name} – Demo-Ton`;
     }
-    updateVolumes();
-    document.getElementById('karaokeStatus').innerHTML = `🎵 Trainiere: ${voices[voice].name}`;
   };
 
-  function playDemoTone(voice) {
-    const freq = { soprano: 659.25, alto: 523.25, tenor: 392.00, bass: 130.81 };
-    if (window.audioContext) window.audioContext.close();
-    window.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const ctx = window.audioContext;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.frequency.value = freq[voice];
-    gain.gain.value = 0.3;
-    osc.start();
-    gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 1.5);
-    osc.stop(ctx.currentTime + 1.5);
-  }
-
-  window.playAllVoices = function() {
+  window.playAllVoices = () => {
     stopAllAudio();
-    Object.keys(voices).forEach(voice => {
-      const audio = voices[voice].audio;
-      if (audio.src && audio.src !== window.location.href) {
-        audio.currentTime = 0;
-        audio.play().catch(e => console.log("Playback error:", e));
-      } else {
-        playDemoTone(voice);
-      }
-    });
-    updateVolumes();
+    const ctx = getAudioContext();
+    let time = ctx.currentTime;
+    const duration = 0.35;
+    const maxLen = Math.max(voiceNotes.soprano.length, voiceNotes.alto.length, voiceNotes.tenor.length, voiceNotes.bass.length);
+    for (let i = 0; i < maxLen; i++) {
+      ['soprano', 'alto', 'tenor', 'bass'].forEach(voice => {
+        const notes = voiceNotes[voice];
+        const note = notes[i % notes.length];
+        const freq = noteFreq[note];
+        if (freq) {
+          const mult = getVolumeMultiplier(voice);
+          if (mult > 0) {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.type = 'sine';
+            osc.frequency.value = freq;
+            gain.gain.value = 0.25 * mult;
+            osc.start(time);
+            gain.gain.exponentialRampToValueAtTime(0.00001, time + duration);
+            osc.stop(time + duration);
+            currentOscillators.push(osc);
+          }
+        }
+      });
+      time += duration;
+    }
+    currentDuration = maxLen * duration;
+    startProgressBar();
     document.getElementById('karaokeStatus').innerHTML = '🎶 Alle Stimmen zusammen';
   };
 
-  window.stopAllAudio = function() {
-    Object.keys(voices).forEach(voice => {
-      const audio = voices[voice].audio;
-      audio.pause();
-      audio.currentTime = 0;
-    });
-    if (window.audioContext) {
-      window.audioContext.close();
-      window.audioContext = null;
-    }
-    if (currentInterval) clearInterval(currentInterval);
+  window.stopAllAudio = () => {
+    currentOscillators.forEach(osc => { try { osc.stop(); } catch(e) {} });
+    currentOscillators = [];
+    if (currentMelodyInterval) clearInterval(currentMelodyInterval);
     if (karaokeInterval) clearInterval(karaokeInterval);
+    if (audioCtx) { audioCtx.close(); audioCtx = null; }
+    isPlaying = false;
     document.getElementById('progressFill').style.width = '0%';
     document.getElementById('karaokeStatus').innerHTML = '⏹ Gestoppt';
   };
 
-  // ==================== LOOP FUNKTION ====================
-  window.toggleLoop = function() {
+  window.toggleLoop = () => {
     loopActive = !loopActive;
     if (loopActive) {
       loopStart = parseFloat(document.getElementById('loopStart').value);
       loopEnd = parseFloat(document.getElementById('loopEnd').value);
-      document.getElementById('karaokeStatus').innerHTML = `🔄 Loop aktiv: ${loopStart}s bis ${loopEnd}s`;
+      document.getElementById('karaokeStatus').innerHTML = `🔄 Loop: ${loopStart}s – ${loopEnd}s`;
     } else {
-      document.getElementById('karaokeStatus').innerHTML = `⏹ Loop deaktiviert`;
+      document.getElementById('karaokeStatus').innerHTML = '⏹ Loop deaktiviert';
     }
   };
 
-  // ==================== KARAOKE ====================
-  window.startKaraoke = function() {
+  window.seekProgress = (event) => {
+    const bar = document.getElementById('progressBar');
+    const rect = bar.getBoundingClientRect();
+    const x = Math.max(0, Math.min(rect.width, event.clientX - rect.left));
+    const percent = x / rect.width;
+    if (currentDuration) {
+      const newTime = percent * currentDuration;
+      document.getElementById('karaokeStatus').innerHTML = `⏩ Gesprungen zu ${formatTime(newTime)}`;
+    }
+  };
+
+  window.startKaraoke = () => {
     const text = document.getElementById('songText').value;
     if (!text.trim()) {
       document.getElementById('karaokeStatus').innerHTML = '⚠️ Bitte Text eingeben!';
       return;
     }
-    
     const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
     const container = document.getElementById('lyricsDisplay');
     container.innerHTML = '';
-    
     lines.forEach((line, i) => {
       const div = document.createElement('div');
       div.className = 'lyrics-line';
@@ -451,20 +412,11 @@
       div.innerHTML = line;
       container.appendChild(div);
     });
-    
-    if (currentPlayingVoice && voices[currentPlayingVoice]) {
-      const audio = voices[currentPlayingVoice].audio;
-      if (audio.src && audio.src !== window.location.href) {
-        audio.currentTime = 0;
-        audio.play().catch(e => console.log);
-      } else {
-        playDemoTone(currentPlayingVoice);
-      }
-      updateVolumes();
+    if (currentPlayingVoice && voiceNotes[currentPlayingVoice].length) {
+      playMelody(voiceNotes[currentPlayingVoice]);
     } else {
-      playAllVoices();
+      playMelody(voiceNotes.soprano);
     }
-    
     if (karaokeInterval) clearInterval(karaokeInterval);
     let lineIndex = 0;
     karaokeInterval = setInterval(() => {
@@ -476,16 +428,22 @@
       }
       lineIndex = (lineIndex + 1) % lines.length;
     }, 3500);
-    
     document.getElementById('karaokeStatus').innerHTML = '🎤 Karaoke läuft!';
   };
 
-  // ==================== PDF UPLOAD ====================
-  window.handlePDFUpload = async function(input) {
+  window.playDetectedMelody = () => {
+    if (currentPlayingVoice && voiceNotes[currentPlayingVoice].length) {
+      playMelody(voiceNotes[currentPlayingVoice]);
+    } else {
+      playMelody(voiceNotes.soprano);
+    }
+  };
+
+  // ==================== PDF UPLOAD & NOTEN EXTRAHIEREN ====================
+  window.handlePDFUpload = async (input) => {
     const file = input.files[0];
     if (!file) return;
-    
-    document.getElementById('pdfStatus').innerHTML = '📄 PDF wird geladen...';
+    document.getElementById('pdfStatus').innerHTML = '📄 PDF wird analysiert...';
     
     if (!window.pdfjsLib) {
       const script = document.createElement('script');
@@ -500,7 +458,6 @@
       const page = await pdf.getPage(1);
       const textContent = await page.getTextContent();
       const extractedText = textContent.items.map(item => item.str).join(' ');
-      
       document.getElementById('songText').value = extractedText || 'Text aus PDF extrahiert.\nHier erscheint der Songtext.';
       
       const allNotes = extractAllNotesFromText(extractedText);
@@ -510,8 +467,7 @@
       if (allNotes.bass.length) voiceNotes.bass = allNotes.bass;
       
       displayVoiceNotes();
-      document.getElementById('pdfStatus').innerHTML = `✅ PDF geladen! Sopran: ${voiceNotes.soprano.length}, Alt: ${voiceNotes.alto.length}, Tenor: ${voiceNotes.tenor.length}, Bass: ${voiceNotes.bass.length} Noten`;
-      
+      document.getElementById('pdfStatus').innerHTML = `✅ PDF geladen! Sopran: ${voiceNotes.soprano.length}, Alt: ${voiceNotes.alto.length}, Tenor: ${voiceNotes.tenor.length}, Bass: ${voiceNotes.bass.length} Noten – Klicke auf "Erkannte Melodie abspielen"!`;
     } catch (error) {
       document.getElementById('pdfStatus').innerHTML = '⚠️ Fehler beim Lesen. Verwende Demo-Noten.';
       displayVoiceNotes();
@@ -533,26 +489,13 @@
     const container = document.getElementById('voiceNotesDisplay');
     if (!container) return;
     container.innerHTML = `
-      <h3>🎼 Erkannte Noten</h3>
-      <div><span class="note-badge" style="background:#FFD700;">🎵 Sopran:</span> ${voiceNotes.soprano.slice(0,12).join(' ')}</div>
-      <div><span class="note-badge" style="background:#66BB6A;">🎵 Alt:</span> ${voiceNotes.alto.slice(0,12).join(' ')}</div>
-      <div><span class="note-badge" style="background:#42A5F5;">🎵 Tenor:</span> ${voiceNotes.tenor.slice(0,12).join(' ')}</div>
-      <div><span class="note-badge" style="background:#EF5350;">🎵 Bass:</span> ${voiceNotes.bass.slice(0,12).join(' ')}</div>
+      <h3>🎼 Erkannte Noten (klick zum Abspielen)</h3>
+      <div><span class="note-badge" style="background:#FFD700;">🎵 Sopran:</span> ${voiceNotes.soprano.slice(0,12).map(n => `<span style="cursor:pointer; margin:0 2px;" onclick="playNote('${n}',0.6)">${n}</span>`).join(' ')}</div>
+      <div><span class="note-badge" style="background:#66BB6A;">🎵 Alt:</span> ${voiceNotes.alto.slice(0,12).map(n => `<span style="cursor:pointer; margin:0 2px;" onclick="playNote('${n}',0.6)">${n}</span>`).join(' ')}</div>
+      <div><span class="note-badge" style="background:#42A5F5;">🎵 Tenor:</span> ${voiceNotes.tenor.slice(0,12).map(n => `<span style="cursor:pointer; margin:0 2px;" onclick="playNote('${n}',0.6)">${n}</span>`).join(' ')}</div>
+      <div><span class="note-badge" style="background:#EF5350;">🎵 Bass:</span> ${voiceNotes.bass.slice(0,12).map(n => `<span style="cursor:pointer; margin:0 2px;" onclick="playNote('${n}',0.6)">${n}</span>`).join(' ')}</div>
     `;
   }
-
-  window.seekProgress = function(event) {
-    const bar = document.getElementById('progressBar');
-    const rect = bar.getBoundingClientRect();
-    const x = Math.max(0, Math.min(rect.width, event.clientX - rect.left));
-    const percent = x / rect.width;
-    if (currentPlayingVoice && voices[currentPlayingVoice]) {
-      const audio = voices[currentPlayingVoice].audio;
-      if (audio.duration) {
-        audio.currentTime = percent * audio.duration;
-      }
-    }
-  };
 
   function formatTime(sec) {
     if (isNaN(sec)) return '0:00';
@@ -561,46 +504,12 @@
     return `${m}:${s.toString().padStart(2, '0')}`;
   }
 
-  // Progress Bar Update
-  setInterval(() => {
-    if (currentPlayingVoice && voices[currentPlayingVoice]) {
-      const audio = voices[currentPlayingVoice].audio;
-      if (audio.duration && !isNaN(audio.duration)) {
-        const percent = (audio.currentTime / audio.duration) * 100;
-        document.getElementById('progressFill').style.width = percent + '%';
-        document.getElementById('currentTime').innerText = formatTime(audio.currentTime);
-        document.getElementById('duration').innerText = formatTime(audio.duration);
-      }
-    }
-  }, 200);
-
   // ==================== INIT ====================
-  document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('year').innerText = new Date().getFullYear();
-    renderMixer();
-    displayVoiceNotes();
-    
-    Object.keys(voices).forEach(voice => {
-      voices[voice].audio.addEventListener('ended', () => {
-        if (loopActive && currentPlayingVoice) {
-          voices[currentPlayingVoice].audio.currentTime = loopStart;
-          voices[currentPlayingVoice].audio.play();
-        }
-      });
-    });
-  });
+  document.getElementById('year').innerText = new Date().getFullYear();
+  renderMixer();
+  displayVoiceNotes();
 
-  // Globale Funktionen
-  window.trainVoice = trainVoice;
-  window.playAllVoices = playAllVoices;
-  window.toggleLoop = toggleLoop;
-  window.startKaraoke = startKaraoke;
-  window.stopAllAudio = stopAllAudio;
-  window.seekProgress = seekProgress;
-  window.handlePDFUpload = handlePDFUpload;
-  window.setVolume = setVolume;
-  window.toggleMute = toggleMute;
-  window.toggleSolo = toggleSolo;
+  window.playNote = playNote;
 </script>
 </body>
 </html>
