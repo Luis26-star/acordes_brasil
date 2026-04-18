@@ -1,45 +1,606 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1.0" />
-<title>Acordes Brasil – Chor</title>
-<link rel="stylesheet" href="css/style.css" />
-<script type="module" src="js/lang.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Acordes Brasil – Pro Chor Mixer</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: linear-gradient(135deg, #0B2F1F 0%, #1A3A2A 100%);
+    color: white;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    margin-bottom: 10px;
+  }
+
+  .subhead { text-align: center; opacity: 0.8; margin-bottom: 30px; }
+
+  .two-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  @media (max-width: 900px) {
+    .two-columns { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .upload-area {
+    border: 2px dashed #FFD700;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 20px;
+  }
+  .upload-area:hover { background: rgba(255,215,0,0.1); transform: scale(1.02); }
+
+  .voice-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 20px 0;
+    justify-content: center;
+  }
+
+  .voice-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .voice-btn:hover { transform: scale(1.05); }
+  .soprano { background: #FFD700; color: #0B2F1F; }
+  .alto { background: #66BB6A; color: white; }
+  .tenor { background: #42A5F5; color: white; }
+  .bass { background: #EF5350; color: white; }
+  .play-all { background: #8B5CF6; color: white; }
+
+  .control-btn {
+    background: #FFD700;
+    color: #0B2F1F;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 5px;
+  }
+
+  /* Mixer Styles */
+  .mixer-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 60px 60px;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+    background: rgba(0,0,0,0.2);
+    padding: 8px 12px;
+    border-radius: 12px;
+  }
+  .mixer-row input[type="range"] {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #FFD700;
+  }
+  .mixer-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s;
+  }
+  .mixer-btn:hover { transform: scale(1.05); }
+  .solo { background: #8B5CF6; color: white; }
+  .solo.active { background: #6D28D9; box-shadow: 0 0 10px #8B5CF6; }
+  .mute { background: #ef4444; color: white; }
+  .mute.active { background: #dc2626; box-shadow: 0 0 10px #ef4444; }
+
+  .progress-bar {
+    width: 100%;
+    height: 12px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 10px;
+    cursor: pointer;
+    margin: 15px 0;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #FFD700;
+    border-radius: 10px;
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+
+  .time-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin: 15px 0;
+    flex-wrap: wrap;
+  }
+  .time-controls input {
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    width: 80px;
+    text-align: center;
+  }
+
+  .lyrics-container {
+    background: rgba(0,0,0,0.3);
+    border-radius: 16px;
+    padding: 15px;
+    margin-top: 15px;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  .lyrics-line {
+    padding: 8px;
+    margin: 4px 0;
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+  .lyrics-line.active {
+    background: #FFD700;
+    color: #0B2F1F;
+    font-weight: bold;
+  }
+
+  .status-msg {
+    background: rgba(0,0,0,0.5);
+    padding: 12px;
+    border-radius: 50px;
+    text-align: center;
+    margin-top: 15px;
+  }
+
+  .note-badge {
+    display: inline-block;
+    background: rgba(0,0,0,0.5);
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    margin: 2px;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.8rem;
+  }
+</style>
 </head>
-
 <body>
-<header>
-  <h1 data-i18n="chor_title">🎶 Acordes Brasil Chor</h1>
-  <div class="lang-switch">
-    <button class="lang-btn" data-lang="de">🇩🇪 DE</button>
-    <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
+<div class="container">
+  <h1>🎵 Acordes Brasil</h1>
+  <div class="subhead">🎤 Pro Chor Mixer – Solo · Mute · Lautstärke · Karaoke</div>
+
+  <div class="two-columns">
+    <!-- Linke Spalte: PDF Upload & Mixer -->
+    <div class="card">
+      <h2>📄 1. PDF hochladen</h2>
+      <div class="upload-area" onclick="document.getElementById('pdfInput').click()">
+        📁 PDF Datei hier klicken<br>
+        <small>(Noten werden automatisch erkannt)</small>
+        <input type="file" id="pdfInput" accept="application/pdf" style="display:none" onchange="handlePDFUpload(this)">
+      </div>
+      
+      <div id="pdfStatus" class="status-msg">⏳ Warte auf PDF...</div>
+      
+      <div id="voiceNotesDisplay" style="margin-top: 15px;"></div>
+
+      <!-- 🎛️ MIXER -->
+      <h3 style="margin-top: 20px;">🎛️ Chor Mixer</h3>
+      <div id="mixer"></div>
+    </div>
+
+    <!-- Rechte Spalte: Karaoke Trainer -->
+    <div class="card">
+      <h2>🎤 2. Stimmen-Training</h2>
+      
+      <div class="voice-buttons">
+        <button class="voice-btn soprano" onclick="trainVoice('soprano')">🎵 Sopran</button>
+        <button class="voice-btn alto" onclick="trainVoice('alto')">🎵 Alt</button>
+        <button class="voice-btn tenor" onclick="trainVoice('tenor')">🎵 Tenor</button>
+        <button class="voice-btn bass" onclick="trainVoice('bass')">🎵 Bass</button>
+        <button class="voice-btn play-all" onclick="playAllVoices()">🎶 Alle Stimmen</button>
+      </div>
+
+      <!-- Zeitsteuerung -->
+      <div class="time-controls">
+        <span>🔄 Loop:</span>
+        <input type="number" id="loopStart" placeholder="Start (s)" value="0" step="0.5">
+        <span>bis</span>
+        <input type="number" id="loopEnd" placeholder="Ende (s)" value="10" step="0.5">
+        <button class="control-btn" onclick="toggleLoop()">🔁 Loop</button>
+      </div>
+
+      <div class="progress-bar" onclick="seekProgress(event)">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div style="display:flex; justify-content:space-between">
+        <span id="currentTime">0:00</span>
+        <span id="duration">0:00</span>
+      </div>
+
+      <div style="text-align:center">
+        <button class="control-btn" onclick="stopAllAudio()">⏹ Stopp</button>
+      </div>
+
+      <!-- Karaoke Text -->
+      <div class="lyrics-container">
+        <h3>📝 Songtext (Karaoke)</h3>
+        <textarea id="songText" rows="3" style="width:100%; padding:10px; border-radius:12px; margin-bottom:10px" placeholder="Text hier eingeben..."></textarea>
+        <button class="control-btn" onclick="startKaraoke()">🎤 Karaoke starten</button>
+        <div id="lyricsDisplay" style="margin-top:15px"></div>
+      </div>
+
+      <div id="karaokeStatus" class="status-msg">✅ Bereit – Lade ein PDF hoch!</div>
+    </div>
   </div>
-</header>
 
-<main>
-  <section>
-    <h2 data-i18n="welcome">Willkommen beim Acordes Brasil Chor!</h2>
-    <p data-i18n="intro">
-      Unser Chor vereint Musikbegeisterte aus aller Welt. Hier findest du Infos, Termine und Hörproben.
-    </p>
-  </section>
+  <footer>
+    Acordes Brasil – Pro Chor Mixer © <span id="year"></span>
+  </footer>
+</div>
 
-  <section>
-    <h3 data-i18n="join">Möchtest du mitmachen?</h3>
-    <a href="login/login.html">
-  <button class="cta-button">🔐 Login</button>
-</a>
+<script>
+  // ==================== AUDIO SETUP MIT MIXER ====================
+  const voices = {
+    soprano: { audio: new Audio(), gain: 1, muted: false, solo: false, name: 'Sopran', color: '#FFD700' },
+    alto:    { audio: new Audio(), gain: 1, muted: false, solo: false, name: 'Alt', color: '#66BB6A' },
+    tenor:   { audio: new Audio(), gain: 1, muted: false, solo: false, name: 'Tenor', color: '#42A5F5' },
+    bass:    { audio: new Audio(), gain: 1, muted: false, solo: false, name: 'Bass', color: '#EF5350' }
+  };
+  
+  let currentSong = "demo";
+  let loopActive = false;
+  let loopStart = 0;
+  let loopEnd = 0;
+  let currentInterval = null;
+  let karaokeInterval = null;
+  let currentPlayingVoice = null;
 
-<a href="login/login.html">
-  <button class="cta-button">🔐 Zum Mitglieder-Login</button>
-</a>
+  // Noten für jede Stimme (Demo)
+  let voiceNotes = {
+    soprano: ['C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6'],
+    alto: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5'],
+    tenor: ['C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3', 'C4'],
+    bass: ['C2', 'D2', 'E2', 'F2', 'G2', 'A2', 'B2', 'C3']
+  };
+
+  // ==================== MIXER FUNKTIONEN ====================
+  function renderMixer() {
+    const container = document.getElementById("mixer");
+    if (!container) return;
+    container.innerHTML = "";
+    Object.keys(voices).forEach(voice => {
+      const v = voices[voice];
+      const row = document.createElement("div");
+      row.className = "mixer-row";
+      row.innerHTML = `
+        <strong style="color:${v.color}">${v.name}</strong>
+        <input type="range" min="0" max="1" step="0.01" value="${v.gain}"
+          oninput="setVolume('${voice}', this.value)">
+        <button class="mixer-btn solo ${v.solo ? 'active' : ''}" onclick="toggleSolo('${voice}')">S</button>
+        <button class="mixer-btn mute ${v.muted ? 'active' : ''}" onclick="toggleMute('${voice}')">M</button>
+      `;
+      container.appendChild(row);
+    });
+  }
+
+  window.setVolume = function(voice, val) {
+    voices[voice].gain = parseFloat(val);
+    updateVolumes();
+  };
+
+  window.toggleMute = function(voice) {
+    voices[voice].muted = !voices[voice].muted;
+    updateVolumes();
+    renderMixer();
+  };
+
+  window.toggleSolo = function(voice) {
+    voices[voice].solo = !voices[voice].solo;
+    updateVolumes();
+    renderMixer();
+  };
+
+  function updateVolumes() {
+    const anySolo = Object.values(voices).some(v => v.solo);
+    Object.keys(voices).forEach(key => {
+      const v = voices[key];
+      let volume = v.gain;
+      if (v.muted) volume = 0;
+      if (anySolo && !v.solo) volume = 0;
+      v.audio.volume = volume;
+    });
+  }
+
+  // ==================== AUDIO FUNKTIONEN ====================
+  function loadSong(song) {
+    currentSong = song;
+    Object.keys(voices).forEach(voice => {
+      const audio = voices[voice].audio;
+      audio.src = `audio/${song}/${voice}.mp3`;
+      audio.load();
+    });
+    renderMixer();
+  }
+
+  window.trainVoice = function(voice) {
+    stopAllAudio();
+    currentPlayingVoice = voice;
+    const audio = voices[voice].audio;
+    if (audio.src && audio.src !== window.location.href) {
+      audio.currentTime = 0;
+      audio.play().catch(e => console.log("Playback error:", e));
+    } else {
+      // Demo-Ton wenn keine MP3 vorhanden
+      playDemoTone(voice);
+    }
+    updateVolumes();
+    document.getElementById('karaokeStatus').innerHTML = `🎵 Trainiere: ${voices[voice].name}`;
+  };
+
+  function playDemoTone(voice) {
+    const freq = { soprano: 659.25, alto: 523.25, tenor: 392.00, bass: 130.81 };
+    if (window.audioContext) window.audioContext.close();
+    window.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const ctx = window.audioContext;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.value = freq[voice];
+    gain.gain.value = 0.3;
+    osc.start();
+    gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 1.5);
+    osc.stop(ctx.currentTime + 1.5);
+  }
+
+  window.playAllVoices = function() {
+    stopAllAudio();
+    Object.keys(voices).forEach(voice => {
+      const audio = voices[voice].audio;
+      if (audio.src && audio.src !== window.location.href) {
+        audio.currentTime = 0;
+        audio.play().catch(e => console.log("Playback error:", e));
+      } else {
+        playDemoTone(voice);
+      }
+    });
+    updateVolumes();
+    document.getElementById('karaokeStatus').innerHTML = '🎶 Alle Stimmen zusammen';
+  };
+
+  window.stopAllAudio = function() {
+    Object.keys(voices).forEach(voice => {
+      const audio = voices[voice].audio;
+      audio.pause();
+      audio.currentTime = 0;
+    });
+    if (window.audioContext) {
+      window.audioContext.close();
+      window.audioContext = null;
+    }
+    if (currentInterval) clearInterval(currentInterval);
+    if (karaokeInterval) clearInterval(karaokeInterval);
+    document.getElementById('progressFill').style.width = '0%';
+    document.getElementById('karaokeStatus').innerHTML = '⏹ Gestoppt';
+  };
+
+  // ==================== LOOP FUNKTION ====================
+  window.toggleLoop = function() {
+    loopActive = !loopActive;
+    if (loopActive) {
+      loopStart = parseFloat(document.getElementById('loopStart').value);
+      loopEnd = parseFloat(document.getElementById('loopEnd').value);
+      document.getElementById('karaokeStatus').innerHTML = `🔄 Loop aktiv: ${loopStart}s bis ${loopEnd}s`;
+    } else {
+      document.getElementById('karaokeStatus').innerHTML = `⏹ Loop deaktiviert`;
+    }
+  };
+
+  // ==================== KARAOKE ====================
+  window.startKaraoke = function() {
+    const text = document.getElementById('songText').value;
+    if (!text.trim()) {
+      document.getElementById('karaokeStatus').innerHTML = '⚠️ Bitte Text eingeben!';
+      return;
+    }
     
-  </section>
-</main>
+    const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
+    const container = document.getElementById('lyricsDisplay');
+    container.innerHTML = '';
+    
+    lines.forEach((line, i) => {
+      const div = document.createElement('div');
+      div.className = 'lyrics-line';
+      div.id = `karaoke-line-${i}`;
+      div.innerHTML = line;
+      container.appendChild(div);
+    });
+    
+    if (currentPlayingVoice && voices[currentPlayingVoice]) {
+      const audio = voices[currentPlayingVoice].audio;
+      if (audio.src && audio.src !== window.location.href) {
+        audio.currentTime = 0;
+        audio.play().catch(e => console.log);
+      } else {
+        playDemoTone(currentPlayingVoice);
+      }
+      updateVolumes();
+    } else {
+      playAllVoices();
+    }
+    
+    if (karaokeInterval) clearInterval(karaokeInterval);
+    let lineIndex = 0;
+    karaokeInterval = setInterval(() => {
+      document.querySelectorAll('.lyrics-line').forEach(el => el.classList.remove('active'));
+      const currentLine = document.getElementById(`karaoke-line-${lineIndex}`);
+      if (currentLine) {
+        currentLine.classList.add('active');
+        currentLine.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      lineIndex = (lineIndex + 1) % lines.length;
+    }, 3500);
+    
+    document.getElementById('karaokeStatus').innerHTML = '🎤 Karaoke läuft!';
+  };
 
-<footer>
-  <p>© 2024 Acordes Brasil – Chorprojekt • <a href="legal.html" data-i18n="privacy">Datenschutz</a></p>
-</footer>
+  // ==================== PDF UPLOAD ====================
+  window.handlePDFUpload = async function(input) {
+    const file = input.files[0];
+    if (!file) return;
+    
+    document.getElementById('pdfStatus').innerHTML = '📄 PDF wird geladen...';
+    
+    if (!window.pdfjsLib) {
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js';
+      await new Promise(resolve => { script.onload = resolve; document.head.appendChild(script); });
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+    }
+    
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      const page = await pdf.getPage(1);
+      const textContent = await page.getTextContent();
+      const extractedText = textContent.items.map(item => item.str).join(' ');
+      
+      document.getElementById('songText').value = extractedText || 'Text aus PDF extrahiert.\nHier erscheint der Songtext.';
+      
+      const allNotes = extractAllNotesFromText(extractedText);
+      if (allNotes.soprano.length) voiceNotes.soprano = allNotes.soprano;
+      if (allNotes.alto.length) voiceNotes.alto = allNotes.alto;
+      if (allNotes.tenor.length) voiceNotes.tenor = allNotes.tenor;
+      if (allNotes.bass.length) voiceNotes.bass = allNotes.bass;
+      
+      displayVoiceNotes();
+      document.getElementById('pdfStatus').innerHTML = `✅ PDF geladen! Sopran: ${voiceNotes.soprano.length}, Alt: ${voiceNotes.alto.length}, Tenor: ${voiceNotes.tenor.length}, Bass: ${voiceNotes.bass.length} Noten`;
+      
+    } catch (error) {
+      document.getElementById('pdfStatus').innerHTML = '⚠️ Fehler beim Lesen. Verwende Demo-Noten.';
+      displayVoiceNotes();
+    }
+  };
+
+  function extractAllNotesFromText(text) {
+    const notePattern = /[A-G][#]?[0-9]/g;
+    const matches = text.match(notePattern) || [];
+    return {
+      soprano: matches.filter(n => parseInt(n.slice(-1)) >= 5).slice(0, 16),
+      alto: matches.filter(n => parseInt(n.slice(-1)) === 4).slice(0, 16),
+      tenor: matches.filter(n => parseInt(n.slice(-1)) === 3).slice(0, 16),
+      bass: matches.filter(n => parseInt(n.slice(-1)) <= 2).slice(0, 16)
+    };
+  }
+
+  function displayVoiceNotes() {
+    const container = document.getElementById('voiceNotesDisplay');
+    if (!container) return;
+    container.innerHTML = `
+      <h3>🎼 Erkannte Noten</h3>
+      <div><span class="note-badge" style="background:#FFD700;">🎵 Sopran:</span> ${voiceNotes.soprano.slice(0,12).join(' ')}</div>
+      <div><span class="note-badge" style="background:#66BB6A;">🎵 Alt:</span> ${voiceNotes.alto.slice(0,12).join(' ')}</div>
+      <div><span class="note-badge" style="background:#42A5F5;">🎵 Tenor:</span> ${voiceNotes.tenor.slice(0,12).join(' ')}</div>
+      <div><span class="note-badge" style="background:#EF5350;">🎵 Bass:</span> ${voiceNotes.bass.slice(0,12).join(' ')}</div>
+    `;
+  }
+
+  window.seekProgress = function(event) {
+    const bar = document.getElementById('progressBar');
+    const rect = bar.getBoundingClientRect();
+    const x = Math.max(0, Math.min(rect.width, event.clientX - rect.left));
+    const percent = x / rect.width;
+    if (currentPlayingVoice && voices[currentPlayingVoice]) {
+      const audio = voices[currentPlayingVoice].audio;
+      if (audio.duration) {
+        audio.currentTime = percent * audio.duration;
+      }
+    }
+  };
+
+  function formatTime(sec) {
+    if (isNaN(sec)) return '0:00';
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60);
+    return `${m}:${s.toString().padStart(2, '0')}`;
+  }
+
+  // Progress Bar Update
+  setInterval(() => {
+    if (currentPlayingVoice && voices[currentPlayingVoice]) {
+      const audio = voices[currentPlayingVoice].audio;
+      if (audio.duration && !isNaN(audio.duration)) {
+        const percent = (audio.currentTime / audio.duration) * 100;
+        document.getElementById('progressFill').style.width = percent + '%';
+        document.getElementById('currentTime').innerText = formatTime(audio.currentTime);
+        document.getElementById('duration').innerText = formatTime(audio.duration);
+      }
+    }
+  }, 200);
+
+  // ==================== INIT ====================
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('year').innerText = new Date().getFullYear();
+    renderMixer();
+    displayVoiceNotes();
+    
+    Object.keys(voices).forEach(voice => {
+      voices[voice].audio.addEventListener('ended', () => {
+        if (loopActive && currentPlayingVoice) {
+          voices[currentPlayingVoice].audio.currentTime = loopStart;
+          voices[currentPlayingVoice].audio.play();
+        }
+      });
+    });
+  });
+
+  // Globale Funktionen
+  window.trainVoice = trainVoice;
+  window.playAllVoices = playAllVoices;
+  window.toggleLoop = toggleLoop;
+  window.startKaraoke = startKaraoke;
+  window.stopAllAudio = stopAllAudio;
+  window.seekProgress = seekProgress;
+  window.handlePDFUpload = handlePDFUpload;
+  window.setVolume = setVolume;
+  window.toggleMute = toggleMute;
+  window.toggleSolo = toggleSolo;
+</script>
 </body>
 </html>
