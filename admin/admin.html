@@ -150,6 +150,38 @@
     });
   }
 
+  window.showAddRehearsalModal = () => document.getElementById('rehearsalModal').style.display = 'flex';
+window.showAddEventModal = () => document.getElementById('eventModal').style.display = 'flex';
+window.showAddSongModal = () => document.getElementById('songModal').style.display = 'flex';
+
+window.saveRehearsal = async () => {
+  await supabase.from('rehearsals').insert([{
+    date: document.getElementById('rehearsalDate').value,
+    time: document.getElementById('rehearsalTime').value + ':00',
+    location: document.getElementById('rehearsalLocation').value
+  }]);
+  closeModal('rehearsalModal');
+  loadRehearsals();
+};
+
+window.saveEvent = async () => {
+  await supabase.from('events').insert([{
+    title: document.getElementById('eventTitle').value,
+    date: document.getElementById('eventDate').value,
+    location: document.getElementById('eventLocation').value
+  }]);
+  closeModal('eventModal');
+  loadEvents();
+};
+
+window.saveSong = async () => {
+  await supabase.from('songs').insert([{
+    title: document.getElementById('songTitle').value,
+    composer: document.getElementById('songComposer').value
+  }]);
+  closeModal('songModal');
+  loadSongs();
+};
   window.showAddMemberModal = () => { currentEditId = null; document.getElementById('memberModal').style.display = 'flex'; };
   window.saveMember = async () => {
     const member = {
