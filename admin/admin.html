@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Acordes Brasil</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .admin-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+  .admin-header { background: rgba(0,0,0,0.3); padding: 20px; border-radius: 24px; margin-bottom: 30px; }
+  .admin-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  .tab-btn-admin { background: rgba(255,215,0,0.2); border: none; padding: 10px 20px; border-radius: 50px; color: white; cursor: pointer; }
+  .tab-btn-admin.active { background: #FFD700; color: #0B2F1F; }
+  .admin-table { width: 100%; border-collapse: collapse; background: rgba(0,0,0,0.3); border-radius: 16px; }
+  .admin-table th, .admin-table td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.2); }
+  .btn-primary { background: #FFD700; color: #0B2F1F; border: none; padding: 8px 16px; border-radius: 50px; cursor: pointer; }
+  .btn-danger { background: #ef4444; color: white; }
+</style>
+</head>
+<body>
+<div class="admin-container">
+  <div class="admin-header">
+    <h1>👑 Acordes Brasil - Verwaltung</h1>
+    <p>Mitglieder, Proben & Repertoire</p>
+  </div>
+
+  <div class="admin-tabs">
+    <button class="tab-btn-admin active" onclick="showAdminTab('members')">👥 Mitglieder</button>
+    <button class="tab-btn-admin" onclick="showAdminTab('rehearsals')">📅 Proben</button>
+    <button class="tab-btn-admin" onclick="showAdminTab('events')">🎪 Events</button>
+    <button class="tab-btn-admin" onclick="showAdminTab('songs')">🎵 Repertoire</button>
+  </div>
+
+  <div id="membersTab">
+    <div class="card">
+      <h2>👥 Mitglieder</h2>
+      <button class="btn-primary" onclick="showAddMemberModal()">➕ Mitglied hinzufügen</button>
+      <div style="overflow-x:auto; margin-top:15px">
+        <table class="admin-table" id="membersTable">
+          <thead><tr><th>Name</th><th>E-Mail</th><th>Stimme</th><th>Aktionen</th></tr></thead>
+          <tbody id="membersTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="rehearsalsTab" style="display:none">
+    <div class="card">
+      <h2>📅 Proben</h2>
+      <button class="btn-primary" onclick="showAddRehearsalModal()">➕ Probe hinzufügen</button>
+      <div style="overflow-x:auto; margin-top:15px">
+        <table class="admin-table" id="rehearsalsTable">
+          <thead><tr><th>Datum</th><th>Uhrzeit</th><th>Ort</th><th>Aktionen</th></tr></thead>
+          <tbody id="rehearsalsTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="eventsTab" style="display:none">
+    <div class="card">
+      <h2>🎪 Events</h2>
+      <button class="btn-primary" onclick="showAddEventModal()">➕ Event hinzufügen</button>
+      <div style="overflow-x:auto; margin-top:15px">
+        <table class="admin-table" id="eventsTable">
+          <thead><tr><th>Titel</th><th>Datum</th><th>Ort</th><th>Aktionen</th></tr></thead>
+          <tbody id="eventsTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="songsTab" style="display:none">
+    <div class="card">
+      <h2>🎵 Repertoire</h2>
+      <button class="btn-primary" onclick="showAddSongModal()">➕ Song hinzufügen</button>
+      <div style="overflow-x:auto; margin-top:15px">
+        <table class="admin-table" id="songsTable">
+          <thead><tr><th>Titel</th><th>Komponist</th><th>Aktionen</th></tr></thead>
+          <tbody id="songsTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div id="memberModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center;">
+  <div style="background:#1A3A2A; padding:30px; border-radius:24px; max-width:400px; width:90%;">
+    <h3>Mitglied</h3>
+    <input type="text" id="memberName" placeholder="Name" style="width:100%; padding:10px; margin:10px 0; border-radius:8px;">
+    <input type="email" id="memberEmail" placeholder="E-Mail" style="width:100%; padding:10px; margin:10px 0; border-radius:8px;">
+    <select id="memberVoice" style="width:100%; padding:10px; margin:10px 0; border-radius:8px;">
+      <option>Sopran</option><option>Alt</option><option>Tenor</option><option>Bass</option>
+    </select>
+    <button class="btn-primary" onclick="saveMember()">Speichern</button>
+    <button onclick="closeModal('memberModal')">Abbrechen</button>
+  </div>
+</div>
+
+<script type="module">
+  import { supabase } from './js/supabase.js';
+
+  let currentEditId = null;
+
+  async function loadMembers() {
+    const { data } = await supabase.from('members').select('*').order('name');
+    const tbody = document.getElementById('membersTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    data?.forEach(m => {
+      const row = tbody.insertRow();
+      row.innerHTML = `
+        <td>${m.name}</td><td>${m.email || '—'}</td><td>${m.voice || '—'}</td>
+        <td><button onclick="editMember('${m.id}')">✏️</button> <button onclick="deleteMember('${m.id}')">🗑️</button></td>
+      `;
+    });
+  }
+
+  async function loadRehearsals() {
+    const { data } = await supabase.from('rehearsals').select('*').order('date');
+    const tbody = document.getElementById('rehearsalsTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    data?.forEach(r => {
+      const row = tbody.insertRow();
+      row.innerHTML = `<td>${r.date}</td><td>${r.time?.slice(0,5)}</td><td>${r.location}</td><td><button onclick="deleteRehearsal('${r.id}')">🗑️</button></td>`;
+    });
+  }
+
+  async function loadEvents() {
+    const { data } = await supabase.from('events').select('*').order('date');
+    const tbody = document.getElementById('eventsTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    data?.forEach(e => {
+      const row = tbody.insertRow();
+      row.innerHTML = `<td>${e.title}</td><td>${e.date}</td><td>${e.location}</td><td><button onclick="deleteEvent('${e.id}')">🗑️</button></td>`;
+    });
+  }
+
+  async function loadSongs() {
+    const { data } = await supabase.from('songs').select('*').order('title');
+    const tbody = document.getElementById('songsTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    data?.forEach(s => {
+      const row = tbody.insertRow();
+      row.innerHTML = `<td>${s.title}</td><td>${s.composer || '—'}</td><td><button onclick="deleteSong('${s.id}')">🗑️</button></td>`;
+    });
+  }
+
+  window.showAddMemberModal = () => { currentEditId = null; document.getElementById('memberModal').style.display = 'flex'; };
+  window.saveMember = async () => {
+    const member = {
+      name: document.getElementById('memberName').value,
+      email: document.getElementById('memberEmail').value,
+      voice: document.getElementById('memberVoice').value
+    };
+    if (currentEditId) await supabase.from('members').update(member).eq('id', currentEditId);
+    else await supabase.from('members').insert([member]);
+    closeModal('memberModal');
+    loadMembers();
+  };
+  window.editMember = async (id) => {
+    const { data } = await supabase.from('members').select('*').eq('id', id).single();
+    if (data) {
+      document.getElementById('memberName').value = data.name;
+      document.getElementById('memberEmail').value = data.email || '';
+      document.getElementById('memberVoice').value = data.voice || 'Sopran';
+      currentEditId = id;
+      document.getElementById('memberModal').style.display = 'flex';
+    }
+  };
+  window.deleteMember = async (id) => { if(confirm('Löschen?')) { await supabase.from('members').delete().eq('id', id); loadMembers(); } };
+  window.deleteRehearsal = async (id) => { await supabase.from('rehearsals').delete().eq('id', id); loadRehearsals(); };
+  window.deleteEvent = async (id) => { await supabase.from('events').delete().eq('id', id); loadEvents(); };
+  window.deleteSong = async (id) => { await supabase.from('songs').delete().eq('id', id); loadSongs(); };
+
+  function showAdminTab(tab) {
+    const tabs = ['members', 'rehearsals', 'events', 'songs'];
+    tabs.forEach(t => { document.getElementById(t + 'Tab').style.display = t === tab ? 'block' : 'none'; });
+    document.querySelectorAll('.tab-btn-admin').forEach(btn => btn.classList.remove('active'));
+    if (event?.target) event.target.classList.add('active');
+    if (tab === 'members') loadMembers();
+    if (tab === 'rehearsals') loadRehearsals();
+    if (tab === 'events') loadEvents();
+    if (tab === 'songs') loadSongs();
+  }
+  window.closeModal = (id) => document.getElementById(id).style.display = 'none';
+  window.showAdminTab = showAdminTab;
+
+  loadMembers();
+</script>
+
+<!-- Rehearsal Modal -->
+<div id="rehearsalModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center;">
+  <div style="background:#1A3A2A; padding:30px; border-radius:24px; max-width:400px; width:90%;">
+    <h3>Probe hinzufügen</h3>
+    <input type="date" id="rehearsalDate" style="width:100%; padding:10px; margin:10px 0; border-radius:8px;">
+    <input type="time" id="rehearsalTime" style="width:100%; padding:10px; margin:10px 0; border-radius:8px;">
+    <input type="text" id="rehearsalLocation" placeholder="Ort" style="width:100%; padding:10px; margin:10px 0; border-radius:8px;">
+    <button class="btn-primary" onclick="saveRehearsal()">Speichern</button>
+    <button onclick="closeModal('rehearsalModal')">Abbrechen</button>
+  </div>
+</div>
+
+<!-- Event Modal -->
+<div id="eventModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center;">
+  <div style="background:#1A3A2A; padding:30px; border-radius:24px; max-width:400px; width:90%;">
+    <h3>Event hinzufügen</h3>
+    <input type="text" id="eventTitle" placeholder="Titel" style="width:100%; padding:10px; margin:10px 0; border-radius:8px;">
+    <input type="date" id="eventDate" style="width:100%; padding:10px; margin:10px 0; border-radius:8px;">
+    <input type="text" id="eventLocation" placeholder="Ort" style="width:100%; padding:10px; margin:10px 0; border-radius:8px;">
+    <button class="btn-primary" onclick="saveEvent()">Speichern</button>
+    <button onclick="closeModal('eventModal')">Abbrechen</button>
+  </div>
+</div>
+
+<!-- Song Modal -->
+<div id="songModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center;">
+  <div style="background:#1A3A2A; padding:30px; border-radius:24px; max-width:400px; width:90%;">
+    <h3>Song hinzufügen</h3>
+    <input type="text" id="songTitle" placeholder="Titel" style="width:100%; padding:10px; margin:10px 0; border-radius:8px;">
+    <input type="text" id="songComposer" placeholder="Komponist" style="width:100%; padding:10px; margin:10px 0; border-radius:8px;">
+    <button class="btn-primary" onclick="saveSong()">Speichern</button>
+    <button onclick="closeModal('songModal')">Abbrechen</button>
+  </div>
+</div>
+
+</body>
+</html>
